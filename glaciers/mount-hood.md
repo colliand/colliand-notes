@@ -19,9 +19,8 @@ wondered whether the same approach would work on other mountains, so I tried it 
 :::{tip} In short
 - Between 1956 and 2015–16, Hood's named glaciers shrank by almost two thirds, from 15.6 to 5.8 km².
 - They kept shrinking. A team that mapped them on the ground found they lost another 17% of their area by 2023.
-- From space the recent loss looks bigger: since 2023, about a third less of the glacier area is bright. Much of the
-  ice is still there, covered in rock and dirt. Counting only bright ice would make the recent loss look about twice
-  as large as it is.
+- From space the recent loss looks twice as big. Since 2023 about a third less of the glacier area is bright, but much
+  of the dark part is still ice, covered in rock and dirt.
 :::
 
 ```{code-cell} python
@@ -131,8 +130,10 @@ Since 2023 it has been about half. On the west side it is much less: Sandy and L
 
 So much of the change since 2023 is ice going dark, not ice going away. My best guess is that the snow and old firn that
 used to cover the lower glaciers melted off in 2023, uncovering ice mixed with rock and dirt. From space that looks like
-bare ground. A survey that counted only bright ice would put Hood's recent loss at about a third instead of 17%:
-about twice as large as it is.
+bare ground.
+
+If you measured Hood's glaciers by their bright ice alone, you would conclude they lost about a third of their area
+since 2015–16. Counting the dark ice too, the field team found 17%. Bright ice alone doubles the loss.
 
 ## What don't I understand?
 
