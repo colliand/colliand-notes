@@ -12,3 +12,17 @@ uv run npm run build        # executes the notebooks → _build/html
 uv run npm start            # live preview
 GLACIER_CHANGE=../glacier-change uv run npm start   # use local glacier-change outputs instead of GitHub
 ```
+
+## Deploy
+
+Cloudflare Pages project `colliand-notes` (direct upload, not git-connected), custom domain notes.colliand.com
+(CNAME to colliand-notes.pages.dev, proxied). Build locally, then upload:
+
+```sh
+uv run npm run build
+CLOUDFLARE_API_TOKEN=… CLOUDFLARE_ACCOUNT_ID=… WRANGLER_SEND_METRICS=false \
+  npx wrangler@4.145.0 pages deploy _build/html --project-name colliand-notes --branch main
+```
+
+`maps/` holds standalone pages copied into the build as-is (MyST does not copy their relative files). `maps/hood-3d.html`
+uses whatcom.land's MapLibre build and `theme.js` (copied from colliand/whatcom-land) so the colours match.
