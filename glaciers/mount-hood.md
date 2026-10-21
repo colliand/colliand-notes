@@ -1,30 +1,20 @@
 ---
-title: "Mount Hood: how much bright ice is left?"
-subtitle: Late-summer satellite images, 2013–2026, against Portland State University's glacier outlines
+title: What is happening to Mount Hood's glaciers?
+subtitle: Satellite images from 2013 to 2026, checked against maps made on the ground
 date: 2026-10-21
+thumbnail: img/share-hood-3d.jpg
 kernelspec:
   name: python3
   display_name: Python 3
 ---
 
-:::{note} Machine-drafted, first results
-Drafted with Claude (an AI assistant) from the code and outputs in
-[colliand/glacier-change](https://github.com/colliand/glacier-change); see its
-[methods note](https://github.com/colliand/glacier-change/blob/main/methods/hood.md). Not peer reviewed.
+:::{note} Machine-drafted
+Drafted with Claude (an AI assistant) from my analysis code and its outputs in
+[colliand/glacier-change](https://github.com/colliand/glacier-change). First results, not peer reviewed.
 :::
 
-Mount Hood's glaciers were mapped by Portland State University (PSU) from 1956 maps and from 2015–16 imagery. Those
-outlines are in the [GLIMS](https://www.glims.org) inventory. This note asks what has happened since: in each late
-summer, how much of the area inside PSU's 2015–16 outlines still shows bright snow or clean ice from space?
-
-**The short answer:** about half to 60% of it, down from 70–85% before 2021. The 2021 heat dome made the first dip,
-which recovered. The hot summer of 2023 made a deeper one, which has not.
-
-**But that is not how much ice was lost.** Field crews mapped Hood's glaciers in September 2023
-([Bakken-French et al. 2024](https://doi.org/10.5194/tc-18-4517-2024)) and found 17% less area than in 2015–16. Checked
-against their outlines, only about half of the ice they mapped looks bright from space. The rest is under rock and
-dirt, which the satellite test reads as bare ground. Most of the 2023 drop is the glaciers' surface going dark: the snow
-and old firn that covered their dirty lower parts melted off and has not come back.
+On [whatcom.land](https://whatcom.land/glaciers) I mapped how Mount Baker's glaciers have changed since the 1970s. I
+wondered whether the same approach would work on other mountains, so I tried it on Mount Hood in Oregon.
 
 ```{code-cell} python
 :tags: [remove-cell]
@@ -37,137 +27,120 @@ import pandas as pd
 SRC = os.environ.get("GLACIER_CHANGE",
                      "https://raw.githubusercontent.com/colliand/glacier-change/d0a3947") + "/data/hood"
 outlines = gpd.read_file(f"{SRC}/glims_outlines.geojson")
-series = pd.read_csv(f"{SRC}/landsat-series.csv", parse_dates=["date"])
-field = pd.read_csv(f"{SRC}/ogi-2023-check.csv")
-ogi = gpd.read_file(f"{SRC}/external/ogi_2023_margins.geojson")
-scenes = pd.read_csv(f"{SRC}/landsat-scenes.csv", parse_dates=["date"])
-plt.rcParams.update({"figure.dpi": 120, "axes.spines.top": False, "axes.spines.right": False})
-```
-
-## The outlines
-
-The 2023 field outlines use a different standard from Portland State's, counting more ice under rock and stagnant
-ice, so their total is close to the 2015–16 one. Compare change within one inventory only.
-
-```{code-cell} python
-:tags: [hide-input]
 named = outlines[~outlines.name.isna()]
-fig, ax = plt.subplots(figsize=(6, 6))
-named[named.era == "then"].to_crs(32610).plot(ax=ax, color="#c9d6e3", edgecolor="#8aa0b8", lw=0.5)
-named[named.era == "now"].to_crs(32610).plot(ax=ax, color="#2b6cb0", edgecolor="#1a4480", lw=0.5)
-ogi.to_crs(32610).boundary.plot(ax=ax, color="#d9480f", lw=0.8)
-ax.set_axis_off()
-ax.set_title("Named glaciers: 1956 (pale), 2015–16 (blue), 2023 field-mapped (orange line)", fontsize=9)
-km2 = named.groupby("era").km2.sum()
-print(f"Named glaciers, km²\n  1956     {km2['then']:5.1f}  Portland State\n  2015–16  {km2['now']:5.1f}  Portland State\n"
-      f"  2023     {ogi.to_crs(32610).area.sum() / 1e6:5.1f}  Bakken-French et al.")
+ogi = gpd.read_file(f"{SRC}/external/ogi_2023_margins.geojson")
+series = pd.read_csv(f"{SRC}/landsat-series.csv")
+usable = pd.read_csv(f"{SRC}/landsat-usable.csv", parse_dates=["date"])
+field = pd.read_csv(f"{SRC}/ogi-2023-check.csv")
+
+# whatcom.land's snow palette (maps/theme.js): ColorBrewer Purples, light to dark, and the teal of the newest outline
+SNOW = ["#f2f0f7", "#cbc9e2", "#9e9ac8", "#756bb1", "#54278f", "#3f007d"]
+TEAL, INK, MUTED, LINE = "#0e8a9e", "#1f2a24", "#5b6760", "#e2e0d8"
+plt.rcParams.update({"figure.dpi": 130, "axes.spines.top": False, "axes.spines.right": False,
+                     "axes.edgecolor": MUTED, "axes.labelcolor": INK, "xtick.color": MUTED, "ytick.color": MUTED,
+                     "font.size": 9})
 ```
 
-## Bright surface each late summer
+## What do the maps show?
 
-For every Landsat 8 and 9 scene from 25 August to 30 September: the share of the 2015–16 outline area that is bright
-(red reflectance more than twice shortwave infrared, the standard glacier-mapping test). Scenes with cloud, haze or
-gaps over the glaciers are dropped; October is left out because low sun puts the north-side glaciers in deep shadow.
-Each year's line value is the median of its scenes. Fresh snow pushes single scenes up and wildfire smoke pushes
-them down, so the spread within a year matters.
+Portland State University mapped Hood's glaciers twice: from 1956 maps, and from 2015–16 images. Their outlines are in
+[GLIMS](https://www.glims.org), the global glacier inventory. In 2023 a team from the Oregon Glaciers Institute mapped
+the glaciers again, walking much of the ice edge
+([Bakken-French et al. 2024](https://doi.org/10.5194/tc-18-4517-2024)).
+
+```{figure} img/hood-3d-north.jpg
+:alt: Mount Hood in 3D from the north. Glaciers on the 1956 map in purple, 2015–16 in pale purple, and 2023 in white with a teal edge.
+:label: fig-hood-3d
+Mount Hood from the north. Purple: ice on the 1956 map. Pale purple: 2015–16. White, with a teal edge: 2023, mapped in
+the field. The purple band is ice that is gone.
+```
+
+[Open the 3D map](https://notes.colliand.com/maps/hood-3d.html) to turn the mountain and look at each glacier.
 
 ```{code-cell} python
-:tags: [hide-input]
-usable = pd.read_csv(f"{SRC}/landsat-usable.csv", parse_dates=["date"])
-fig, ax = plt.subplots(figsize=(7, 3.6))
-ax.scatter(usable.date.dt.year + (usable.date.dt.dayofyear - 237) / 120, 100 * usable.bright_share,
-           s=12, color="#9aa9b8", label="each usable scene", zorder=2)
-ax.plot(series.year, 100 * series.bright_share, "o-", color="#2b6cb0", label="median for the year", zorder=3)
+:tags: [remove-input]
+km2 = named.groupby("era").km2.sum()
+print(f"Named glaciers:  1956  {km2['then']:4.1f} km²\n"
+      f"              2015–16  {km2['now']:4.1f} km²\n"
+      f"                 2023  {ogi.to_crs(32610).area.sum() / 1e6:4.1f} km²  (field team)")
+```
+
+Hood's named glaciers lost almost two thirds of their area between 1956 and 2015–16. The 2023 total looks about the
+same as 2015–16, but the two teams drew the edges differently. The field team counted ice buried under rock, which is
+hard to see on images. Comparing their own outlines over time, they found that Hood's glaciers lost 17% of their area
+from 2015–16 to 2023.
+
+## What do satellites see each summer?
+
+Landsat satellites photograph Hood every week or two. Clean snow and ice are bright in red light and dark in shortwave
+infrared, so a simple ratio of the two finds them. For every clear image from late August through September, I
+measured how much of the 2015–16 glacier area was bright.
+
+```{code-cell} python
+:tags: [remove-input]
+fig, ax = plt.subplots(figsize=(6.4, 3.2))
+ax.scatter(usable.date.dt.year + (usable.date.dt.dayofyear - 255) / 140, 100 * usable.bright_share,
+           s=10, color=SNOW[2], label="one image", zorder=2)
+ax.plot(series.year, 100 * series.bright_share, "o-", color=SNOW[4], lw=1.8, ms=5, label="middle value for the year", zorder=3)
+ax.annotate("heat dome", (2021, 56), xytext=(0, -16), textcoords="offset points", ha="center", color=TEAL, fontsize=8)
+ax.annotate("2023", (2023, 44), xytext=(0, -16), textcoords="offset points", ha="center", color=TEAL, fontsize=8)
 ax.set_ylim(0, 100)
-ax.set_ylabel("% of 2015–16 outline area bright")
-ax.set_xticks(range(2013, 2027))
-ax.tick_params(axis="x", labelsize=8, rotation=45)
-ax.grid(axis="y", alpha=0.3)
-ax.legend(frameon=False, fontsize=8, loc="lower left")
+ax.set_ylabel("% of 2015–16 glacier area that is bright")
+ax.set_xticks(range(2013, 2027), [str(y) if y in (2013, 2026) else f"’{y % 100:02d}" for y in range(2013, 2027)])
+ax.grid(axis="y", color=LINE)
+ax.legend(frameon=False, loc="lower left", fontsize=8)
 plt.show()
 ```
 
-```{code-cell} python
-:tags: [hide-input]
-t = series.assign(**{"bright (median)": (100 * series.bright_share).round().astype(int).astype(str) + "%",
-                     "range": [f"{100 * a:.0f}–{100 * b:.0f}%" for a, b in zip(series.min_share, series.max_share)]})
-t[["year", "bright (median)", "range", "scenes"]].style.hide(axis="index")
-```
+From 2013 to 2020 about three quarters of the glacier area was bright each September. In 2021, the summer of the heat
+dome, that fell to 56%, then came back the next year. In 2023 it fell to 44%, and it has not come back: it has been
+between 50% and 62% since. (2014 is missing because clouds covered the mountain in every September image.)
 
-The pattern: from 2013 to 2020 the bright share sat between about 70% and 85%. It fell to 56% in 2021, the summer
-of the Pacific Northwest heat dome, and came back in 2022. Then 2023 took it to 44%, and it has stayed between 50%
-and 62% since. (2014 is missing: both of its September scenes had cloud over the mountain.)
+## Is the ice gone, or just hidden?
 
-For each year, the scene nearest the median, with PSU's outlines in red and the bright edge in cyan:
+The satellites say Hood lost about a third of its bright surface. The field team says Hood lost 17% of its area. Why
+the difference?
 
-```{figure} https://raw.githubusercontent.com/colliand/glacier-change/d0a3947/methods/hood-landsat-series.jpg
-:alt: Grid of late-summer Landsat images of Mount Hood, one per year, with glacier outlines in red and bright snow and ice outlined in cyan.
-Landsat 8/9 true colour, the scene nearest each year's median. Red: PSU 2015–16 outlines. Cyan: edge of bright snow and clean ice.
-```
-
-## Glacier by glacier (Sentinel-2, 10 m)
-
-Sentinel-2 is sharper, with fewer clear late-season scenes. Bright area within 100 m of each glacier's outline, on two
-clear days nine years apart:
+I checked the satellite images against the field team's 2023 outlines. This is the share of *their* 2023 ice that
+looks bright from space:
 
 ```{code-cell} python
-:tags: [hide-input]
-def bright(date):
-    a = pd.read_csv(f"{SRC}/areas-{date}.csv")
-    return a.dropna(subset=["name"]).groupby("name")["t2.0_km2"].sum()
-
-g = pd.DataFrame({"1956 km²": named[named.era == "then"].groupby("name").km2.sum(),
-                  "2015–16 km²": named[named.era == "now"].groupby("name").km2.sum(),
-                  "bright 2016-09-25": bright("2016-09-25"),
-                  "bright 2025-09-23": bright("2025-09-23")})
-g.loc["Total"] = g.sum()
-g["change"] = (100 * (g["bright 2025-09-23"] / g["bright 2016-09-25"] - 1)).round().astype(int).astype(str) + "%"
-g.index = g.index.str.removesuffix(" Glacier")
-g.index.name = None
-g.round(2).style.format(precision=2)
-```
-
-## Checked against the field-mapped 2023 outlines
-
-Bakken-French and colleagues mapped Hood's glaciers from 30 cm imagery taken on 8 September 2023 and walked about 60%
-of the edges, counting ice under rock and stagnant ice
-([data on Zenodo](https://doi.org/10.5281/zenodo.13356244)). The share of *their* 2023 ice that Sentinel-2 shows as
-bright:
-
-```{code-cell} python
-:tags: [hide-input]
+:tags: [remove-input]
 f = field.pivot(index="glacier", columns="date", values="bright_share")
-f = f.loc[[*sorted(i for i in f.index if i != "All"), "All"]]
-km2 = field[field.date == field.date.iloc[0]].set_index("glacier").ogi_2023_km2
-f.insert(0, "2023 area km²", km2)
+f = f.loc[[*sorted(i for i in f.index if i != "All"), "All"]].rename(index={"All": "All glaciers"})
+f.columns = [c[:4] for c in f.columns]
 f.index.name = None
-f.style.format({c: "{:.0%}" for c in f.columns[1:]} | {"2023 area km²": "{:.2f}"}).background_gradient(
-    cmap="Blues", subset=f.columns[1:], vmin=0, vmax=1)
+f.style.format("{:.0%}").background_gradient(cmap="Purples", vmin=0, vmax=1.4)
 ```
 
-The same ice outline, unchanged across the columns, went from about 80% bright in 2016 to about 50% from 2023 on.
-West-side glaciers went darkest: Sandy, Ladd and Zigzag. The test is precise: on 14 September 2023 only 0.19 km² it
-called bright fell outside the field outlines. But in a low-snow year it misses about half the real ice.
+The outline is the same in every column; only the year of the image changes. In 2016 about 80% of the ice was bright.
+Since 2023 it has been about half. On the west side it is much less: Sandy and Ladd glaciers have been mostly dark since 2023.
 
-## What this does and does not show
+So much of the change since 2023 is ice going dark, not ice going away. My best guess is that the snow and old firn that
+used to cover the lower glaciers melted off in 2023, uncovering ice mixed with rock and dirt. From space that looks like
+bare ground. A survey using only bright ice would overstate Hood's glacier loss about twofold.
 
-- **Shows:** a sharp, lasting change in the glaciers' surface in 2023, after a first dip in 2021 that recovered.
-  About half of Hood's remaining ice now looks like rock from space, against a fifth in 2016. Two satellites,
-  analysed separately, agree on the timing.
-- **Where:** mostly at the edges and below about 2,300 m, and on the west-side glaciers.
-- **Does not show:** area loss. Field mapping puts that at 17% from 2015–16 to 2023, about half the bright-surface
-  drop. A satellite test of bright ice, used alone, would overstate Hood's glacier loss about twofold.
-- **Why it matters:** dark, debris-covered ice melts differently. A thin dirt layer speeds melt; thick rock slows it.
-  Hood's lower glaciers are turning into the kind that a bright-ice satellite inventory cannot track.
-- **Next:** repeat the field-outline check each year the field team publishes, and measure thinning from repeat lidar
-  elevation where it exists (thinning shows even under rock).
+## What don't I understand?
 
-## Data and credits
+- How much of the dark ice is under a thin layer of dirt, and how much under thick rock? A thin layer makes ice melt
+  faster; thick rock slows it down.
+- Will the dark lower glaciers keep their area while they thin? Repeat lidar would show thinning, even under rock. I
+  have not yet looked for repeat lidar of Hood.
+- The same method gave a much better match on Mount Baker, where the glaciers carry less rock. How many Cascade
+  glaciers look more like Hood than Baker?
 
-- Glacier outlines: Portland State University, via [GLIMS](https://www.glims.org) (NSIDC), and the 2023 Mt. Hood glacier
-  margins of Bakken-French et al. (2024), published by the Oregon Glaciers Institute on Zenodo under CC BY 4.0
-  [](https://doi.org/10.5281/zenodo.13356244).
-- Landsat 8/9 Collection 2 Level-2 (USGS) and Sentinel-2 Level-2A (ESA Copernicus), via
-  [Microsoft Planetary Computer](https://planetarycomputer.microsoft.com).
-- Copernicus DEM GLO-30 for elevations.
-- Code and outputs: [colliand/glacier-change](https://github.com/colliand/glacier-change).
+## What did I get wrong?
+
+If you know Hood's glaciers, or this kind of data, better than I do, I would like to hear from you. The code, data and
+a longer [methods note](https://github.com/colliand/glacier-change/blob/main/methods/hood.md) are on GitHub, and
+[issues](https://github.com/colliand/glacier-change/issues) are open.
+
+## Sources
+
+- Glacier outlines for 1956 and 2015–16: Portland State University, via GLIMS (NSIDC).
+- Glacier outlines for 2023: Oregon Glaciers Institute,
+  [doi:10.5281/zenodo.13356244](https://doi.org/10.5281/zenodo.13356244), CC BY 4.0. The study: Bakken-French et al.
+  (2024), *Unprecedented 21st century glacier loss on Mt. Hood, Oregon, USA*, The Cryosphere 18, 4517–4530.
+- Images: Landsat 8 and 9 (USGS) and Sentinel-2 (ESA Copernicus), via Microsoft Planetary Computer.
+- 3D terrain: AWS Terrain Tiles (Mapzen), from USGS 3DEP. Map colours and 3D view: the same as
+  [whatcom.land](https://whatcom.land/glaciers).

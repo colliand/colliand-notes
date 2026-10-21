@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mount Hood glaciers in 3D</title>
+<!-- Same colours, terrain and layer order as the glacier close-up on whatcom.land (theme.js is copied from there). -->
+<script src="theme.js"></script>
+<script type="module" src="vendor/maplibre-gl@6.13.0/global.js"></script>
+<link rel="stylesheet" href="vendor/maplibre-gl@6.13.0/maplibre-gl.css">
+<style>
+  html, body { margin: 0; height: 100%; background: var(--neutral-paper); color: var(--neutral-ink);
+    font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  #map { position: absolute; inset: 0; }
+  .legend { position: absolute; left: 10px; bottom: 28px; background: color-mix(in srgb, var(--neutral-card) 92%, transparent);
+    border: 1px solid var(--neutral-line); border-radius: 6px; padding: 8px 10px; display: grid; gap: 4px; font-size: 13px; }
+  .legend span { display: flex; align-items: center; gap: 7px; }
+  .sw { width: 16px; height: 12px; border: 1.5px solid; box-sizing: border-box; }
+  .sw.then { background: var(--snow-amount-2); border-color: var(--snow-then); border-style: dashed; }
+  .sw.now { background: var(--snow-amount-1); border-color: var(--snow-amount-5); }
+  .sw.est { background: var(--snow-amount-0); border-color: var(--snow-est); }
+  #orbit { position: absolute; right: 10px; bottom: 28px; font: inherit; padding: 6px 12px; border-radius: 6px;
+    border: 1px solid var(--neutral-line); background: var(--neutral-card); color: var(--neutral-ink); cursor: pointer; }
+  body.still .legend, body.still #orbit, body.still .maplibregl-ctrl { display: none; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div class="legend" aria-label="Legend">
+  <span><i class="sw then"></i>1956 map</span>
+  <span><i class="sw now"></i>2015–16</span>
+  <span><i class="sw est"></i>2023, mapped in the field</span>
+</div>
+<button id="orbit" type="button" aria-pressed="false">Orbit</button>
+<script defer>
+// URL hash: #still hides the controls (for the static image); b, p, z, pad set bearing, pitch, zoom, frame offset.
+addEventListener("DOMContentLoaded", () => {
+  const H = new URLSearchParams(location.hash.slice(1));
+  if (H.has("still")) document.body.classList.add("still");
+  const TERRAIN = "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png";
+  const dem = { type: "raster-dem", tiles: [TERRAIN], encoding: "terrarium", tileSize: 256, maxzoom: 13,
+    attribution: "Terrain: AWS Terrain Tiles (Mapzen); USGS 3DEP" };
+  const map = new maplibregl.Map({ container: "map", style: "https://tiles.openfreemap.org/styles/positron",
+    center: [-121.6985, 45.3745], zoom: +(H.get("z") || 12.2), pitch: +(H.get("p") || 62), bearing: +(H.get("b") || 160),
+    maxPitch: 75, attributionControl: { compact: true }, canvasContextAttributes: { preserveDrawingBuffer: true } });
+  // keep the summit in the upper part of the frame, so the near flanks and glacier tongues fit below it
+  map.setPadding({ bottom: Math.round(innerHeight * +(H.get("pad") || 0.45)) });
+  map.addControl(new maplibregl.NavigationControl({ showZoom: true, visualizePitch: true }), "top-right");
+  map.on("load", async () => {
+    const labels = map.getStyle().layers.find((l) => l.type === "symbol")?.id;
+    const [psu, field] = await Promise.all(["data/hood_glims.geojson", "data/hood_2023_field.geojson"]
+      .map((u) => fetch(u).then((r) => r.json())));
+    map.addSource("dem", dem);
+    map.addSource("relief", { ...dem });
+    map.addSource("psu", { type: "geojson", data: psu, attribution: "Glaciers 1956, 2015–16: Portland State Univ. via GLIMS/NSIDC" });
+    map.addSource("field", { type: "geojson", data: field, attribution: "Glaciers 2023: Bakken-French et al. 2024, Oregon Glaciers Institute (CC BY 4.0)" });
+    const era = (e) => ["==", ["get", "era"], e];
+    // Old map in medium purple; 2015–16 over it in pale purple; 2023 over that in near-white with a teal edge.
+    // The purple band showing is ice lost by 2015–16; the pale band, ice lost by 2023.
+    map.addLayer({ id: "hillshade", type: "hillshade", source: "relief",
+      paint: { "hillshade-exaggeration": 0.55, "hillshade-shadow-color": THEME.neutral.ref,
+        "hillshade-highlight-color": THEME.neutral.card, "hillshade-accent-color": THEME.neutral.outline } }, labels);
+    map.addLayer({ id: "then-fill", type: "fill", source: "psu", filter: era("then"),
+      paint: { "fill-color": THEME.snow.amount[2], "fill-opacity": 0.8 * 0.82 } }, labels);
+    map.addLayer({ id: "now-fill", type: "fill", source: "psu", filter: era("now"),
+      paint: { "fill-color": THEME.snow.amount[1], "fill-opacity": 0.82 } }, labels);
+    map.addLayer({ id: "field-fill", type: "fill", source: "field",
+      paint: { "fill-color": THEME.snow.amount[0], "fill-opacity": 0.82 } }, labels);
+    map.addLayer({ id: "then-line", type: "line", source: "psu", filter: era("then"),
+      paint: { "line-color": THEME.snow.then, "line-width": 1, "line-dasharray": [2, 1.5] } }, labels);
+    map.addLayer({ id: "now-line", type: "line", source: "psu", filter: era("now"),
+      paint: { "line-color": THEME.snow.amount[5], "line-width": 1.2 } }, labels);
+    map.addLayer({ id: "field-line", type: "line", source: "field",
+      paint: { "line-color": THEME.snow.est, "line-width": 1.4 } }, labels);
+    map.setTerrain({ source: "dem", exaggeration: 1.3 });
+    document.querySelector(".maplibregl-ctrl-attrib")?.classList.remove("maplibregl-compact-show");
+    map.once("idle", () => document.body.dataset.ready = "1");
+  });
+  const btn = document.getElementById("orbit");
+  let frame = null;
+  const stop = () => { cancelAnimationFrame(frame); frame = null; btn.textContent = "Orbit"; btn.setAttribute("aria-pressed", "false"); };
+  btn.addEventListener("click", () => {
+    if (frame) return stop();
+    btn.textContent = "Stop"; btn.setAttribute("aria-pressed", "true");
+    const t0 = performance.now(), b0 = map.getBearing();
+    const step = (t) => { const f = (t - t0) / 40000; if (f >= 1) return stop(); map.setBearing(b0 + 360 * f); frame = requestAnimationFrame(step); };
+    frame = requestAnimationFrame(step);
+  });
+  for (const ev of ["mousedown", "touchstart", "wheel"]) map.getCanvasContainer().addEventListener(ev, () => frame && stop(), { passive: true });
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) btn.hidden = true;
+});
+</script>
+</body>
+</html>
