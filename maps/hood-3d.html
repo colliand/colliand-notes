@@ -10,50 +10,163 @@
 <link rel="stylesheet" href="vendor/maplibre-gl@6.13.0/maplibre-gl.css">
 <style>
   html, body { margin: 0; height: 100%; background: var(--neutral-paper); color: var(--neutral-ink);
-    font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; overflow: hidden; }
   #map { position: absolute; inset: 0; }
-  .legend { position: absolute; left: 10px; bottom: 28px; background: color-mix(in srgb, var(--neutral-card) 92%, transparent);
-    border: 1px solid var(--neutral-line); border-radius: 6px; padding: 8px 10px; display: grid; gap: 4px; font-size: 13px; }
+  .box { background: color-mix(in srgb, var(--neutral-card) 94%, transparent); border: 1px solid var(--neutral-line); border-radius: 6px; }
+  button, select { font: inherit; color: var(--neutral-ink); }
+  .ghost { padding: 5px 11px; border-radius: 6px; border: 1px solid var(--neutral-line); background: var(--neutral-card); cursor: pointer; }
+  .top { position: absolute; left: 10px; top: 10px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; max-width: calc(100% - 70px); }
+  .top select { padding: 5px 8px; border-radius: 6px; border: 1px solid var(--neutral-line); background: var(--neutral-card); }
+  .hint { padding: 4px 8px; font-size: 13px; color: var(--neutral-muted); }
+  .legend { position: absolute; left: 10px; bottom: 28px; padding: 8px 10px; display: grid; gap: 4px; font-size: 13px; }
   .legend span { display: flex; align-items: center; gap: 7px; }
-  .sw { width: 16px; height: 12px; border: 1.5px solid; box-sizing: border-box; }
+  .sw { width: 16px; height: 12px; border: 1.5px solid; box-sizing: border-box; flex: none; }
   .sw.then { background: var(--snow-amount-2); border-color: var(--snow-then); border-style: dashed; }
   .sw.now { background: var(--snow-amount-1); border-color: var(--snow-amount-5); }
   .sw.est { background: var(--snow-amount-0); border-color: var(--snow-est); }
-  #orbit { position: absolute; right: 10px; bottom: 28px; font: inherit; padding: 6px 12px; border-radius: 6px;
-    border: 1px solid var(--neutral-line); background: var(--neutral-card); color: var(--neutral-ink); cursor: pointer; }
-  body.still .legend, body.still #orbit, body.still .maplibregl-ctrl { display: none; }
+  #orbit { position: absolute; right: 10px; bottom: 28px; }
+  /* One glacier: a card on the right on wide screens, a sheet along the bottom on phones */
+  #card { position: absolute; right: 52px; top: 10px; width: 300px; max-height: calc(100% - 60px); overflow: auto;
+    padding: 12px 14px; box-sizing: border-box; box-shadow: 0 2px 10px rgb(0 0 0 / .12); }
+  #card[hidden] { display: none; }
+  #card h2 { margin: 0; font-size: 17px; }
+  .card-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  #card dl { display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; margin: 10px 0; }
+  #card dt { color: var(--neutral-muted); }
+  #card dd { margin: 0; font-variant-numeric: tabular-nums; }
+  #card h3 { font-size: 13px; margin: 12px 0 4px; font-weight: 600; }
+  .bars { display: grid; grid-template-columns: auto 1fr 3.2em; gap: 3px 8px; align-items: center; font-size: 13px;
+    font-variant-numeric: tabular-nums; }
+  .bar { height: 11px; background: var(--neutral-line); border-radius: 2px; overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--snow-amount-3); }
+  .note { font-size: 12.5px; color: var(--neutral-muted); margin: 8px 0 0; }
+  #full { padding: 4px 8px; font-size: 13px; text-decoration: none; color: var(--neutral-ink); }
+  body:not(.embedded) #full { display: none; }
+  body.card-open #full { display: none; }
+  @media (max-width: 640px) {
+    #card { left: 0; right: 0; top: auto; bottom: 0; width: auto; max-height: 55%; border-radius: 10px 10px 0 0; }
+    body.card-open .legend, body.card-open #orbit, body.card-open .hint, body.embedded .hint { display: none; }
+  }
+  body.still .legend, body.still #orbit, body.still .maplibregl-ctrl, body.still .top, body.still #full { display: none; }
 </style>
 </head>
 <body>
 <div id="map"></div>
-<div class="legend" aria-label="Legend">
+<div class="top">
+  <select id="pick" aria-label="Pick a glacier"><option value="">Pick a glacier</option></select>
+  <span class="hint box">or tap one</span>
+  <a id="full" class="box" href="hood-3d.html" target="_blank" rel="noopener">Full screen ↗</a>
+</div>
+<div class="legend box" aria-label="Legend">
   <span><i class="sw then"></i>1956 map</span>
   <span><i class="sw now"></i>2015–16</span>
   <span><i class="sw est"></i>2023, mapped in the field</span>
 </div>
-<button id="orbit" type="button" aria-pressed="false">Orbit</button>
+<button id="orbit" class="ghost" type="button" aria-pressed="false">Orbit</button>
+<section id="card" class="box" hidden aria-live="polite">
+  <div class="card-head"><h2 id="g-title"></h2><button id="g-close" class="ghost" type="button">Whole mountain</button></div>
+  <dl id="g-facts"></dl>
+  <h3>How much of the 2023 ice looks bright from space</h3>
+  <div class="bars" id="g-bright"></div>
+  <p class="note" id="g-note"></p>
+</section>
 <script defer>
-// URL hash: #still hides the controls (for the static image); b, p, z, pad set bearing, pitch, zoom, frame offset.
+// URL hash: #still hides the controls (for the static image); b, p, z, pad set bearing, pitch, zoom, frame offset;
+// g=<glacier> opens that glacier (e.g. #g=Eliot).
 addEventListener("DOMContentLoaded", () => {
   const H = new URLSearchParams(location.hash.slice(1));
   if (H.has("still")) document.body.classList.add("still");
+  const embedded = window.self !== window.top;
+  if (embedded) document.body.classList.add("embedded");
+  const narrow = () => innerWidth <= 640;
   const TERRAIN = "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png";
   const dem = { type: "raster-dem", tiles: [TERRAIN], encoding: "terrarium", tileSize: 256, maxzoom: 13,
     attribution: "Terrain: AWS Terrain Tiles (Mapzen); USGS 3DEP" };
-  const map = new maplibregl.Map({ container: "map", style: "https://tiles.openfreemap.org/styles/positron",
-    center: [-121.6985, 45.3745], zoom: +(H.get("z") || 12.2), pitch: +(H.get("p") || 62), bearing: +(H.get("b") || 160),
-    maxPitch: 75, attributionControl: { compact: true }, canvasContextAttributes: { preserveDrawingBuffer: true } });
+  const HOME = { center: [-121.6985, 45.3745], zoom: +(H.get("z") || 12.2), pitch: +(H.get("p") || 62), bearing: +(H.get("b") || 160) };
+  // Inside the notes page, one finger scrolls the page and two move the map (as on whatcom.land's main maps)
+  const map = new maplibregl.Map({ container: "map", style: "https://tiles.openfreemap.org/styles/positron", ...HOME,
+    maxPitch: 75, clickTolerance: 8, cooperativeGestures: embedded, attributionControl: { compact: true },
+    canvasContextAttributes: { preserveDrawingBuffer: true } });
   // keep the summit in the upper part of the frame, so the near flanks and glacier tongues fit below it
-  map.setPadding({ bottom: Math.round(innerHeight * +(H.get("pad") || 0.45)) });
+  const homePad = () => ({ top: 0, right: 0, left: 0, bottom: Math.round(innerHeight * +(H.get("pad") || 0.45)) });
+  map.setPadding(homePad());
   map.addControl(new maplibregl.NavigationControl({ showZoom: true, visualizePitch: true }), "top-right");
+
+  // PSU names end in " Glacier" and spell Newton Clark without the hyphen; the field team's don't. g = the short name.
+  const short = (s) => (s || "").replace(/ Glacier$/, "").replace("Newton Clark", "Newton-Clark");
+  let FACTS = {}, PSU, FIELD, current = null;
+  const card = document.getElementById("card"), pick = document.getElementById("pick");
+  const km = (x) => (x == null ? "not mapped" : `${x.toFixed(2)} km²`);
+
+  function show(g, { fly = true } = {}) {
+    const f = FACTS[g];
+    if (!f) return;
+    current = g;
+    pick.value = g;
+    history.replaceState(null, "", "#g=" + encodeURIComponent(g));
+    document.getElementById("g-title").textContent = f.name;
+    const change = Math.round((100 * (f.km2_2015 - f.km2_1956)) / f.km2_1956);
+    document.getElementById("g-facts").innerHTML = `
+      <dt>On the 1956 map</dt><dd>${km(f.km2_1956)}</dd>
+      <dt>${f.year_2015}</dt><dd>${km(f.km2_2015)} (${change > 0 ? "+" : ""}${change}%)</dd>
+      <dt>2023, in the field</dt><dd>${km(f.km2_2023)}</dd>`;
+    document.getElementById("g-bright").innerHTML = f.bright.map((b) => {
+      const pct = Math.round(100 * b.share);
+      return `<span>${b.date.slice(0, 4)}</span><span class="bar"><i style="width:${pct}%"></i></span><span>${pct}%</span>`;
+    }).join("");
+    document.getElementById("g-note").textContent = "The 1956 and 2015–16 outlines are Portland State University's, so " +
+      "their change can be compared. The field team drew the 2023 edge differently, counting ice under rock, so its area " +
+      "is not comparable with the other two. The bars use one Sentinel-2 image from each September (early October in 2026), " +
+      "measured inside the 2023 outline. Dark ice is often still there, covered in rock and dirt.";
+    card.hidden = false;
+    document.body.classList.add("card-open");
+    highlight();
+    if (fly) frame(g);
+  }
+
+  function hide() {
+    current = null;
+    pick.value = "";
+    history.replaceState(null, "", location.pathname + location.search);
+    card.hidden = true;
+    document.body.classList.remove("card-open");
+    highlight();
+    map.easeTo({ ...HOME, bearing: map.getBearing(), padding: homePad(), duration: 900 });
+  }
+
+  // The chosen glacier at full strength; its neighbours faded, for context (as in whatcom.land's close-up)
+  function highlight() {
+    const pick = (on, off) => (current ? ["case", ["==", ["get", "g"], current], on, off] : on);
+    map.setPaintProperty("then-fill", "fill-opacity", pick(0.8 * 0.82, 0.25));
+    map.setPaintProperty("now-fill", "fill-opacity", pick(0.82, 0.45));
+    map.setPaintProperty("field-fill", "fill-opacity", pick(0.82, 0.45));
+    for (const id of ["then-line", "now-line", "field-line"]) map.setPaintProperty(id, "line-opacity", pick(1, 0.3));
+  }
+
+  // Fit the glacier's outlines from all three years, keeping the current view direction, and leave room for the card
+  function frame(g) {
+    let w = 180, s = 90, e = -180, n = -90;
+    const walk = (c) => (typeof c[0] === "number" ? (w = Math.min(w, c[0]), e = Math.max(e, c[0]), s = Math.min(s, c[1]), n = Math.max(n, c[1])) : c.forEach(walk));
+    for (const fc of [PSU, FIELD]) fc.features.filter((x) => x.properties.g === g).forEach((x) => walk(x.geometry.coordinates));
+    const pad = 0.004;
+    map.setPadding({ top: 0, right: 0, bottom: 0, left: 0 });  // fitBounds adds its padding to the map's own
+    const cardH = card.getBoundingClientRect().height;
+    const padding = narrow() ? { top: 50, bottom: cardH + 20, left: 20, right: 20 } : { top: 50, bottom: 40, left: 40, right: 380 };
+    map.fitBounds([[w - pad, s - pad], [e + pad, n + pad]], { padding, pitch: 60, bearing: map.getBearing(), maxZoom: 14.5,
+      duration: matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 1200 });
+  }
+
   map.on("load", async () => {
     const labels = map.getStyle().layers.find((l) => l.type === "symbol")?.id;
-    const [psu, field] = await Promise.all(["data/hood_glims.geojson", "data/hood_2023_field.geojson"]
+    [PSU, FIELD, FACTS] = await Promise.all(["data/hood_glims.geojson", "data/hood_2023_field.geojson", "data/hood_glaciers.json"]
       .map((u) => fetch(u).then((r) => r.json())));
+    for (const f of PSU.features) f.properties.g = short(f.properties.name);
+    for (const f of FIELD.features) f.properties.g = short(f.properties.Name);
+    for (const g of Object.keys(FACTS).sort()) pick.add(new Option(FACTS[g].name, g));
     map.addSource("dem", dem);
     map.addSource("relief", { ...dem });
-    map.addSource("psu", { type: "geojson", data: psu, attribution: "Glaciers 1956, 2015–16: Portland State Univ. via GLIMS/NSIDC" });
-    map.addSource("field", { type: "geojson", data: field, attribution: "Glaciers 2023: Bakken-French et al. 2024, Oregon Glaciers Institute (CC BY 4.0)" });
+    map.addSource("psu", { type: "geojson", data: PSU, attribution: "Glaciers 1956, 2015–16: Portland State Univ. via GLIMS/NSIDC" });
+    map.addSource("field", { type: "geojson", data: FIELD, attribution: "Glaciers 2023: Bakken-French et al. 2024, Oregon Glaciers Institute (CC BY 4.0)" });
     const era = (e) => ["==", ["get", "era"], e];
     // Old map in medium purple; 2015–16 over it in pale purple; 2023 over that in near-white with a teal edge.
     // The purple band showing is ice lost by 2015–16; the pale band, ice lost by 2023.
@@ -74,19 +187,41 @@ addEventListener("DOMContentLoaded", () => {
       paint: { "line-color": THEME.snow.est, "line-width": 1.4 } }, labels);
     map.setTerrain({ source: "dem", exaggeration: 1.3 });
     document.querySelector(".maplibregl-ctrl-attrib")?.classList.remove("maplibregl-compact-show");
+
+    // Tap a glacier to open it; look within ~10 px of the finger, and prefer a glacier other than the open one
+    const TAP = ["field-fill", "now-fill", "then-fill", "field-line", "now-line", "then-line"];
+    const near = (pt) => map.queryRenderedFeatures([[pt.x - 10, pt.y - 10], [pt.x + 10, pt.y + 10]], { layers: TAP })
+      .map((x) => x.properties.g).filter(Boolean);
+    map.on("click", (e) => {
+      const gs = near(e.point);
+      const hit = gs.find((g) => g !== current) || gs[0];
+      if (hit && hit !== current) { stop(); show(hit); }
+    });
+    map.on("mousemove", (e) => { const gs = near(e.point); map.getCanvas().style.cursor = gs.some((g) => g !== current) ? "pointer" : ""; });
+    const g0 = H.get("g");
+    if (g0 && FACTS[g0]) show(g0);
     map.once("idle", () => document.body.dataset.ready = "1");
   });
+  // a new #g=… (a link, or the back button) opens that glacier
+  addEventListener("hashchange", () => {
+    const g = new URLSearchParams(location.hash.slice(1)).get("g");
+    if (g && FACTS[g] && g !== current) show(g); else if (!g && current) hide();
+  });
+  pick.addEventListener("change", () => (pick.value ? show(pick.value) : hide()));
+  document.getElementById("g-close").addEventListener("click", hide);
+  addEventListener("keydown", (e) => { if (e.key === "Escape" && current) hide(); });
+
   const btn = document.getElementById("orbit");
-  let frame = null;
-  const stop = () => { cancelAnimationFrame(frame); frame = null; btn.textContent = "Orbit"; btn.setAttribute("aria-pressed", "false"); };
+  let orbit = null;
+  const stop = () => { cancelAnimationFrame(orbit); orbit = null; btn.textContent = "Orbit"; btn.setAttribute("aria-pressed", "false"); };
   btn.addEventListener("click", () => {
-    if (frame) return stop();
+    if (orbit) return stop();
     btn.textContent = "Stop"; btn.setAttribute("aria-pressed", "true");
     const t0 = performance.now(), b0 = map.getBearing();
-    const step = (t) => { const f = (t - t0) / 40000; if (f >= 1) return stop(); map.setBearing(b0 + 360 * f); frame = requestAnimationFrame(step); };
-    frame = requestAnimationFrame(step);
+    const step = (t) => { const f = (t - t0) / 40000; if (f >= 1) return stop(); map.setBearing(b0 + 360 * f); orbit = requestAnimationFrame(step); };
+    orbit = requestAnimationFrame(step);
   });
-  for (const ev of ["mousedown", "touchstart", "wheel"]) map.getCanvasContainer().addEventListener(ev, () => frame && stop(), { passive: true });
+  for (const ev of ["mousedown", "touchstart", "wheel"]) map.getCanvasContainer().addEventListener(ev, () => orbit && stop(), { passive: true });
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) btn.hidden = true;
 });
 </script>

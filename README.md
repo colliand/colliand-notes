@@ -26,3 +26,5 @@ CLOUDFLARE_API_TOKEN=… CLOUDFLARE_ACCOUNT_ID=… WRANGLER_SEND_METRICS=false \
 
 `maps/` holds standalone pages copied into the build as-is (MyST does not copy their relative files). `maps/hood-3d.html`
 uses whatcom.land's MapLibre build and `theme.js` (copied from colliand/whatcom-land) so the colours match.
+Its per-glacier card reads `maps/data/hood_glaciers.json`; rebuild that with `uv run python scripts/hood_map_data.py`
+(same `GLACIER_CHANGE` override as the notebooks). The page embeds the map in an iframe; `custom.css` makes it taller.

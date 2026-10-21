@@ -6,7 +6,6 @@ project:
       url: https://colliand.com
   github: https://github.com/colliand/colliand-notes
   license: CC-BY-4.0
-  jupyter: true
   toc:
     - file: index.md
     - title: Glaciers
@@ -17,6 +16,7 @@ site:
   title: Notes · Jim Colliander
   options:
     logo_text: notes.colliand.com
+    style: custom.css
   nav:
     - title: colliand.com
       url: https://colliand.com

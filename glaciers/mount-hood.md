@@ -9,7 +9,7 @@ kernelspec:
 ---
 
 :::{note} Machine-drafted
-Drafted with Claude (an AI assistant) from my analysis code and its outputs in
+Drafted with help from AI language models, working from my analysis code and its outputs in
 [colliand/glacier-change](https://github.com/colliand/glacier-change). First results, not peer reviewed.
 :::
 
@@ -48,14 +48,17 @@ Portland State University mapped Hood's glaciers twice: from 1956 maps, and from
 the glaciers again, walking much of the ice edge
 ([Bakken-French et al. 2024](https://doi.org/10.5194/tc-18-4517-2024)).
 
-```{figure} img/hood-3d-north.jpg
-:alt: Mount Hood in 3D from the north. Glaciers on the 1956 map in purple, 2015–16 in pale purple, and 2023 in white with a teal edge.
+:::{iframe} https://notes.colliand.com/maps/hood-3d.html
 :label: fig-hood-3d
+:title: Mount Hood's glaciers in 3D
+:width: 100%
+:class: hood-map
+:placeholder: img/hood-3d-north.jpg
+:alt: Mount Hood in 3D from the north. Glaciers on the 1956 map in purple, 2015–16 in pale purple, and 2023 in white with a teal edge.
 Mount Hood from the north. Purple: ice on the 1956 map. Pale purple: 2015–16. White, with a teal edge: 2023, mapped in
-the field. The purple band is ice that is gone.
-```
-
-[Open the 3D map](https://notes.colliand.com/maps/hood-3d.html) to turn the mountain and look at each glacier.
+the field. The purple band is ice that is gone. Tap a glacier to see its numbers. Drag with two fingers to turn the
+mountain.
+:::
 
 ```{code-cell} python
 :tags: [remove-input]

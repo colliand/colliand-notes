@@ -1,0 +1,2 @@
+/* The Mount Hood 3D map: tall enough on a phone to tap a glacier and read its card (MyST's default is a 60% box) */
+.hood-map div.relative { padding-bottom: 0 !important; height: min(78vh, 640px); width: 100% !important; }
