@@ -16,6 +16,14 @@ Drafted with help from AI language models, working from my analysis code and its
 On [whatcom.land](https://whatcom.land/glaciers) I mapped how Mount Baker's glaciers have changed since the 1970s. I
 wondered whether the same approach would work on other mountains, so I tried it on Mount Hood in Oregon.
 
+:::{tip} In short
+- Between 1956 and 2015–16, Hood's named glaciers shrank by almost two thirds, from 15.6 to 5.8 km².
+- They kept shrinking. A team that mapped them on the ground found they lost another 17% of their area by 2023.
+- From space the recent loss looks bigger: since 2023, about a third less of the glacier area is bright. Much of the
+  ice is still there, covered in rock and dirt. Counting only bright ice would make the recent loss look about twice
+  as large as it is.
+:::
+
 ```{code-cell} python
 :tags: [remove-cell]
 import os
@@ -63,15 +71,17 @@ mountain.
 ```{code-cell} python
 :tags: [remove-input]
 km2 = named.groupby("era").km2.sum()
-print(f"Named glaciers:  1956  {km2['then']:4.1f} km²\n"
-      f"              2015–16  {km2['now']:4.1f} km²\n"
-      f"                 2023  {ogi.to_crs(32610).area.sum() / 1e6:4.1f} km²  (field team)")
+print(f"Named glaciers, Portland State outlines (same method both times)\n"
+      f"     1956  {km2['then']:4.1f} km²\n"
+      f"  2015–16  {km2['now']:4.1f} km²   {100 * (km2['now'] / km2['then'] - 1):.0f}%\n\n"
+      f"Field team's outlines (a different method: they include ice under rock)\n"
+      f"     2023  {ogi.to_crs(32610).area.sum() / 1e6:4.1f} km²   -17% since 2015–16, by their own comparison")
 ```
 
-Hood's named glaciers lost almost two thirds of their area between 1956 and 2015–16. The 2023 total looks about the
-same as 2015–16, but the two teams drew the edges differently. The field team counted ice buried under rock, which is
-hard to see on images. Comparing their own outlines over time, they found that Hood's glaciers lost 17% of their area
-from 2015–16 to 2023.
+Hood's named glaciers lost almost two thirds of their area between 1956 and 2015–16. Don't compare the 2023 total with
+those two: it is not a sign that the shrinking stopped. The field team drew the edges differently and counted ice buried
+under rock, which is hard to see on images. Comparing their own outlines over time, they found that Hood's glaciers lost
+another 17% of their area from 2015–16 to 2023.
 
 ## What do satellites see each summer?
 
@@ -121,7 +131,8 @@ Since 2023 it has been about half. On the west side it is much less: Sandy and L
 
 So much of the change since 2023 is ice going dark, not ice going away. My best guess is that the snow and old firn that
 used to cover the lower glaciers melted off in 2023, uncovering ice mixed with rock and dirt. From space that looks like
-bare ground. A survey using only bright ice would overstate Hood's glacier loss about twofold.
+bare ground. A survey that counted only bright ice would put Hood's recent loss at about a third instead of 17%:
+about twice as large as it is.
 
 ## What don't I understand?
 
