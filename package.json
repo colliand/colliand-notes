@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "myst build --html --execute",
+    "start": "myst start --execute"
+  },
+  "devDependencies": {
+    "mystmd": "1.11.0"
+  }
+}

@@ -1,0 +1,16 @@
+[project]
+name = "colliand-notes"
+version = "0.1.0"
+description = "notes.colliand.com: notebooks built with MyST"
+requires-python = "==3.13.*"
+dependencies = [
+    "ipykernel",
+    "jupyter-server",
+    "pandas==2.3.3",
+    "geopandas==1.1.4",
+    "matplotlib",
+]
+
+[tool.uv]
+package = false
+exclude-newer = "2026-10-09T00:00:00Z"
