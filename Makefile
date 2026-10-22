@@ -19,5 +19,5 @@ binder:
 	@{ echo "# Binder (mybinder.org) environment for the notes that run code."; \
 	  echo "# Versions match uv.lock; regenerate with: make binder"; \
 	  uv export --frozen --no-hashes --no-dev --format requirements-txt --no-header --no-annotate \
-	    | grep -E '^(pandas|geopandas|matplotlib|pyogrio|pyproj|shapely|numpy)=='; \
+	    | grep -E '^(pandas|geopandas|matplotlib|pyogrio|pyproj|shapely|numpy|rasterio)=='; \
 	  echo "jupytext==1.19.5"; } > binder/requirements.txt
