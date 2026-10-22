@@ -15,3 +15,7 @@ dependencies = [
 [tool.uv]
 package = false
 exclude-newer = "2026-10-09T00:00:00Z"
+
+# Cloudflare Pages runs `pip install .` on its own before the build command; there is nothing to package.
+[tool.setuptools]
+py-modules = []
