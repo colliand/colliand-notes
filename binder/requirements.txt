@@ -1,0 +1,10 @@
+# Binder (mybinder.org) environment for the notes that run code.
+# Versions match uv.lock; regenerate with: make binder
+pandas==2.3.3
+geopandas==1.1.4
+matplotlib==3.11.2
+pyogrio==0.13.0
+pyproj==3.8.0
+shapely==2.2.0
+numpy==2.5.3
+jupytext==1.19.5

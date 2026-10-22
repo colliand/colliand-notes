@@ -3,6 +3,8 @@ title: What is happening to Mount Hood's glaciers?
 subtitle: Satellite images from 2013 to 2026, checked against maps made on the ground
 date: 2026-10-21
 thumbnail: img/share-hood-3d.jpg
+description: Hood's glaciers lost another 17% of their area between 2015–16 and 2023. From space the loss looks twice as big, because much of the remaining ice is covered in rock and dirt.
+tags: [Landsat, Mount Hood, Oregon]
 kernelspec:
   name: python3
   display_name: Python 3

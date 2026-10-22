@@ -166,6 +166,7 @@ dependencies = [
     { name = "jupyter-server" },
     { name = "matplotlib" },
     { name = "pandas" },
+    { name = "pyyaml" },
 ]
 
 [package.metadata]
@@ -175,6 +176,7 @@ requires-dist = [
     { name = "jupyter-server" },
     { name = "matplotlib" },
     { name = "pandas", specifier = "==2.3.3" },
+    { name = "pyyaml", specifier = "==6.0.3" },
 ]
 
 [[package]]

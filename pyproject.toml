@@ -9,6 +9,7 @@ dependencies = [
     "pandas==2.3.3",
     "geopandas==1.1.4",
     "matplotlib",
+    "pyyaml==6.0.3",
 ]
 
 [tool.uv]

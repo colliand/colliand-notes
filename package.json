@@ -1,8 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "build": "myst build --html --execute && rm -rf _build/html/maps && cp -R maps _build/html/maps",
-    "start": "myst start --execute"
+    "index": "python scripts/build_index.py",
+    "build": "npm run index && myst build --html --execute && rm -rf _build/html/maps && cp -R maps _build/html/maps && python scripts/fix_meta.py",
+    "start": "npm run index && myst start --execute"
   },
   "devDependencies": {
     "mystmd": "1.11.0"

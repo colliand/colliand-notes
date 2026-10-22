@@ -6,11 +6,22 @@ project:
       url: https://colliand.com
   github: https://github.com/colliand/colliand-notes
   license: CC-BY-4.0
+  # The power button on notes with code: runs them in the page on mybinder.org (environment in binder/)
+  jupyter:
+    binder:
+      repo: colliand/colliand-notes
+      ref: workbench
+  exclude:
+    - README.md
+    - templates/**
+    - binder/**
   toc:
+  # BEGIN toc (scripts/build_index.py)
     - file: index.md
     - title: Glaciers
       children:
         - file: glaciers/mount-hood.md
+  # END toc
 site:
   template: book-theme
   title: Notes · Jim Colliander
