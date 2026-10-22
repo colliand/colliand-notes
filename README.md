@@ -21,7 +21,8 @@ make new T=glaciers/baker-flipbook                  # start a note from template
 A note is `<topic>/<slug>.md`; the folder is the topic. `scripts/build_index.py` (run by every build) writes the
 landing cards in `index.md` and the toc in `myst.yml` from each note's frontmatter (`title`, `subtitle`, `date`,
 `thumbnail`, `tags`), newest first. Do not edit between the BEGIN/END markers by hand. `draft: true` keeps a note off
-the landing page and toc; it still builds, so a preview link works. Set `description` too: it is the text under link
+the landing cards; preview and local builds list it in the toc under "Drafts" so it has a link, and production
+(`main`) leaves it out entirely. Set `description` too: it is the text under link
 previews and search results, and `scripts/fix_meta.py` adds the share tags MyST leaves out (absolute `og:image`, etc.).
 
 Notes with code cells get MyST's power button, which runs them in the page on mybinder.org. Binder installs

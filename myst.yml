@@ -15,6 +15,7 @@ project:
     - README.md
     - templates/**
     - binder/**
+    - maps-src/**
   toc:
   # BEGIN toc (scripts/build_index.py)
     - file: index.md

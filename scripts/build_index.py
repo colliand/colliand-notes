@@ -4,16 +4,19 @@
 
 A note is any `<topic>/<slug>.md` with a `title` and `date`. The folder is the topic ("glaciers" → Glaciers).
 Cards show the thumbnail, date, title, subtitle and tags, newest first within each topic; topics are ordered by
-their newest note. Notes with `draft: true` are left out of both (they still build, so a preview link works).
+their newest note. Notes with `draft: true` are left off the cards; on preview builds and local builds they are listed
+in the toc under "Drafts" so they build and have a link, and on production (main) they are left out entirely.
 Only the text between the BEGIN/END markers is rewritten, in index.md and in myst.yml.
 """
+import os
 import re
 from pathlib import Path
 
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
-SKIP = {"_build", "node_modules", "binder", "scripts", "templates", "maps"}
+PRODUCTION = os.environ.get("CF_PAGES_BRANCH") == "main"
+SKIP = {"_build", "node_modules", "binder", "scripts", "templates", "maps", "maps-src"}
 
 
 def frontmatter(path):
@@ -21,13 +24,13 @@ def frontmatter(path):
     return yaml.safe_load(m.group(1)) if m else {}
 
 
-def notes():
+def notes(drafts=False):
     out = []
     for p in sorted(ROOT.glob("*/*.md")):
         if p.parent.name in SKIP or p.parent.name.startswith("."):
             continue
         fm = frontmatter(p)
-        if not fm.get("title") or not fm.get("date") or fm.get("draft"):
+        if not fm.get("title") or not fm.get("date") or bool(fm.get("draft")) != drafts:
             continue
         out.append({"path": p.relative_to(ROOT).as_posix(), "topic": p.parent.name, **fm})
     return out
@@ -66,11 +69,14 @@ def cards(ns):
     return "\n".join(parts).rstrip() + "\n"
 
 
-def toc(ns):
+def toc(ns, drafts):
     lines = ["    - file: index.md"]
     for topic, items in topics(ns):
         lines += [f"    - title: {title(topic)}", "      children:"]
         lines += [f"        - file: {n['path']}" for n in items]
+    if drafts:
+        lines += ["    - title: Drafts", "      children:"]
+        lines += [f"        - file: {n['path']}" for n in drafts]
     return "\n".join(lines) + "\n"
 
 
@@ -86,4 +92,5 @@ def splice(path, begin, end, body):
 if __name__ == "__main__":
     ns = notes()
     splice(ROOT / "index.md", "<!-- BEGIN cards (scripts/build_index.py) -->", "<!-- END cards -->", cards(ns))
-    splice(ROOT / "myst.yml", "  # BEGIN toc (scripts/build_index.py)", "  # END toc", toc(ns))
+    drafts = [] if PRODUCTION else notes(drafts=True)
+    splice(ROOT / "myst.yml", "  # BEGIN toc (scripts/build_index.py)", "  # END toc", toc(ns, drafts))

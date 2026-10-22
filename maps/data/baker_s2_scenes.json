@@ -1,0 +1,41 @@
+[
+ {
+  "date": "2021-09-24",
+  "note": "Before the hottest summers on record at South Cascade Glacier",
+  "id": "S2B_T10UEV_20210924T191029_L2A",
+  "baseline": "05.00",
+  "offset": 1000,
+  "bands": {
+   "blue": "https://e84-earth-search-sentinel-data.s3.us-west-2.amazonaws.com/sentinel-2-c1-l2a/10/U/EV/2021/9/S2B_T10UEV_20210924T191029_L2A/B02.tif",
+   "green": "https://e84-earth-search-sentinel-data.s3.us-west-2.amazonaws.com/sentinel-2-c1-l2a/10/U/EV/2021/9/S2B_T10UEV_20210924T191029_L2A/B03.tif",
+   "red": "https://e84-earth-search-sentinel-data.s3.us-west-2.amazonaws.com/sentinel-2-c1-l2a/10/U/EV/2021/9/S2B_T10UEV_20210924T191029_L2A/B04.tif",
+   "swir": "https://e84-earth-search-sentinel-data.s3.us-west-2.amazonaws.com/sentinel-2-c1-l2a/10/U/EV/2021/9/S2B_T10UEV_20210924T191029_L2A/B11.tif"
+  }
+ },
+ {
+  "date": "2023-09-14",
+  "note": "After the 2023 melt season",
+  "id": "S2B_T10UEV_20230914T190744_L2A",
+  "baseline": "05.09",
+  "offset": 1000,
+  "bands": {
+   "blue": "https://e84-earth-search-sentinel-data.s3.us-west-2.amazonaws.com/sentinel-2-c1-l2a/10/U/EV/2023/9/S2B_T10UEV_20230914T190744_L2A/B02.tif",
+   "green": "https://e84-earth-search-sentinel-data.s3.us-west-2.amazonaws.com/sentinel-2-c1-l2a/10/U/EV/2023/9/S2B_T10UEV_20230914T190744_L2A/B03.tif",
+   "red": "https://e84-earth-search-sentinel-data.s3.us-west-2.amazonaws.com/sentinel-2-c1-l2a/10/U/EV/2023/9/S2B_T10UEV_20230914T190744_L2A/B04.tif",
+   "swir": "https://e84-earth-search-sentinel-data.s3.us-west-2.amazonaws.com/sentinel-2-c1-l2a/10/U/EV/2023/9/S2B_T10UEV_20230914T190744_L2A/B11.tif"
+  }
+ },
+ {
+  "date": "2025-09-23",
+  "note": "The latest clear scene before autumn snow; whatcom.land's 2025 estimate",
+  "id": "S2B_T10UEV_20250923T190651_L2A",
+  "baseline": "05.11",
+  "offset": 1000,
+  "bands": {
+   "blue": "https://e84-earth-search-sentinel-data.s3.us-west-2.amazonaws.com/sentinel-2-c1-l2a/10/U/EV/2025/9/S2B_T10UEV_20250923T190651_L2A/B02.tif",
+   "green": "https://e84-earth-search-sentinel-data.s3.us-west-2.amazonaws.com/sentinel-2-c1-l2a/10/U/EV/2025/9/S2B_T10UEV_20250923T190651_L2A/B03.tif",
+   "red": "https://e84-earth-search-sentinel-data.s3.us-west-2.amazonaws.com/sentinel-2-c1-l2a/10/U/EV/2025/9/S2B_T10UEV_20250923T190651_L2A/B04.tif",
+   "swir": "https://e84-earth-search-sentinel-data.s3.us-west-2.amazonaws.com/sentinel-2-c1-l2a/10/U/EV/2025/9/S2B_T10UEV_20250923T190651_L2A/B11.tif"
+  }
+ }
+]
