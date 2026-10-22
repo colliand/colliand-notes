@@ -26,7 +26,7 @@ STAC = "https://earth-search.aws.element84.com/v1/search"
 # Clear late-season scenes vetted in whatcom-land methods/glacier-outlines.md. 2022-09-27 is left out (2022's big
 # snowpack was still lying); 2024-09-06 too (smoke).
 DATES = {
-    "2021-09-24": "Before the hottest summers on record at South Cascade Glacier",
+    "2021-09-24": "Before 2023 and 2025, the record melt years at South Cascade Glacier",
     "2023-09-14": "After the 2023 melt season",
     "2025-09-23": "The latest clear scene before autumn snow; whatcom.land's 2025 estimate",
 }
