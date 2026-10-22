@@ -21,6 +21,7 @@ project:
     - file: index.md
     - title: Glaciers
       children:
+        - file: glaciers/baker-bright-ice.md
         - file: glaciers/mount-hood.md
   # END toc
 site:

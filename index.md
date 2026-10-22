@@ -14,6 +14,13 @@ I draft these notes with help from AI language models, working from analysis cod
 ## Glaciers
 
 ::::{grid} 1 2 2 3
+:::{card} Mount Baker's bright ice, computed in your browser
+:link: glaciers/baker-bright-ice.md
+:header: 2026-10-22
+:footer: Sentinel-2 · deck.gl-raster · Mount Baker · cloud-native
+![](glaciers/img/baker-s2.jpg)
+An experiment with deck.gl-raster and Sentinel-2
+:::
 :::{card} What is happening to Mount Hood's glaciers?
 :link: glaciers/mount-hood.md
 :header: 2026-10-21

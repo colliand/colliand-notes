@@ -4,7 +4,7 @@ subtitle: An experiment with deck.gl-raster and Sentinel-2
 date: 2026-10-22
 description: The band-ratio test behind whatcom.land's glacier estimate, run live on Sentinel-2 images streamed from the public archive. Drag the threshold and switch years.
 tags: [Sentinel-2, deck.gl-raster, Mount Baker, cloud-native]
-draft: true
+thumbnail: img/baker-s2.jpg
 ---
 
 :::{note} Machine-drafted
