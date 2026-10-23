@@ -5,7 +5,6 @@ date: 2026-10-23
 thumbnail: img/share-baker.jpg
 description: Mount Baker's glaciers covered 48 km² on the 1970s maps and 40 km² in 2015. Satellite images say about another seventh of that bright ice was gone by 2025, mostly from the edges, and 2026 brought no recovery.
 tags: [Sentinel-2, Landsat, Mount Baker, whatcom.land]
-draft: true
 kernelspec:
   name: python3
   display_name: Python 3
