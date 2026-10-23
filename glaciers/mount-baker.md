@@ -161,8 +161,8 @@ plt.show()
 ```
 
 Through 2020 more than 90% of the 2015 glacier area was bright every September. Since 2023 it has fallen each year I
-can measure: 87% in 2023, 85% in 2025, 82% in 2026. Smoke and cloud hid the mountain in every usable image of 2021 and
-2024, so those years are missing, and the 2015 and 2017 values come from hazy images. The drop is smaller than on
+can measure: 87% in 2023, 85% in 2025, 82% in 2026. In 2021 and 2024 smoke or cloud spoiled every late-summer image, so
+those years are missing, and the 2015 and 2017 values come from hazy images. The drop is smaller than on
 [Mount Hood](mount-hood.md), where about half the glacier area went dark after 2023, but it points the same way.
 
 ## Was 2026 any better?
