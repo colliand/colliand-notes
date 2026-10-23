@@ -21,8 +21,15 @@ project:
     - file: index.md
     - title: Glaciers
       children:
+        - file: glaciers/mount-baker.md
         - file: glaciers/baker-bright-ice.md
         - file: glaciers/mount-hood.md
+    - title: Fires
+      children:
+        - file: fires/perry-severity.md
+    - title: Drafts
+      children:
+        - file: floods/nooksack-flood-2021.md
   # END toc
 site:
   template: book-theme

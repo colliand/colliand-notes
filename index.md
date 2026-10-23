@@ -14,6 +14,13 @@ I draft these notes with help from AI language models, working from analysis cod
 ## Glaciers
 
 ::::{grid} 1 2 2 3
+:::{card} What is happening to Mount Baker's glaciers?
+:link: glaciers/mount-baker.md
+:header: 2026-10-23
+:footer: Sentinel-2 · Landsat · Mount Baker · whatcom.land
+![](glaciers/img/share-baker.jpg)
+Maps from 1975 and 2015, and satellite images every late summer since
+:::
 :::{card} Mount Baker's bright ice, computed in your browser
 :link: glaciers/baker-bright-ice.md
 :header: 2026-10-22
@@ -27,6 +34,18 @@ An experiment with deck.gl-raster and Sentinel-2
 :footer: Landsat · Mount Hood · Oregon
 ![](glaciers/img/share-hood-3d.jpg)
 Satellite images from 2013 to 2026, checked against maps made on the ground
+:::
+::::
+
+## Fires
+
+::::{grid} 1 2 2 3
+:::{card} How badly did the Perry fire burn?
+:link: fires/perry-severity.md
+:header: 2026-10-22
+:footer: Sentinel-2 · burn severity · North Cascades · whatcom.land
+![](fires/img/share-perry.jpg)
+Four satellite maps of one fire in the North Cascades, and what they teach my own method
 :::
 ::::
 <!-- END cards -->
