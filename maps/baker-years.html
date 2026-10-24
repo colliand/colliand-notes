@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mount Baker, 42 summers</title>
+<!-- Colours from whatcom.land (theme.js is copied from there). Source of vendor/baker-years.js: maps-src/baker-s2/years.js. -->
+<script src="theme.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; background: #111; color: var(--neutral-ink);
+    font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; overflow: hidden; }
+  #map { position: absolute; inset: 0; }
+  .box { background: color-mix(in srgb, var(--neutral-card) 94%, transparent); border: 1px solid var(--neutral-line); border-radius: 6px; }
+  button { font: inherit; color: var(--neutral-ink); }
+  .panel { position: absolute; left: 10px; top: 10px; padding: 10px 12px; display: grid; gap: 8px; width: 270px;
+    max-width: calc(100% - 44px); box-sizing: border-box; }
+  #years { display: flex; gap: 4px; flex-wrap: wrap; }
+  #years button { padding: 4px 10px; border-radius: 6px; border: 1px solid var(--neutral-line); background: var(--neutral-card); cursor: pointer;
+    font-variant-numeric: tabular-nums; }
+  #years button[aria-pressed="true"] { background: var(--snow-amount-4); border-color: var(--snow-amount-4); color: #fff; }
+  .row { display: flex; align-items: center; gap: 8px; }
+  .row input[type=range] { flex: 1; min-width: 0; accent-color: var(--snow-amount-4); }
+  #thr-value { font-variant-numeric: tabular-nums; width: 2.2em; text-align: right; }
+  label.check { display: flex; align-items: center; gap: 7px; }
+  .sw { width: 16px; height: 12px; box-sizing: border-box; flex: none; border: 1.5px solid; }
+  .sw.ice { background: var(--snow-amount-0); border-color: var(--snow-amount-2); }
+  .sw.o15 { border-color: var(--snow-then); }
+  .sw.o25 { border-color: var(--snow-est); }
+  .small { font-size: 12.5px; color: var(--neutral-muted); margin: 0; }
+  #readout { font-variant-numeric: tabular-nums; }
+  #readout:empty { display: none; }
+  #status { position: absolute; right: 10px; top: 10px; padding: 5px 9px; font-size: 13px; }
+  #status[hidden] { display: none; }
+  .credit { position: absolute; right: 0; bottom: 0; padding: 2px 6px; font-size: 11px; background: rgb(255 255 255 / .75); color: #333; }
+  .credit a { color: inherit; }
+  #full { font-size: 13px; color: var(--neutral-ink); }
+  body:not(.embedded) #full { display: none; }
+  details summary { cursor: pointer; color: var(--neutral-muted); font-size: 13px; }
+  @media (max-width: 640px) {
+    .panel { top: auto; bottom: 22px; left: 8px; right: 8px; width: auto; max-width: none; padding: 8px 10px; gap: 6px; }
+  }
+  .yearrow { display: flex; align-items: baseline; gap: 10px; }
+  #year { font-size: 30px; font-weight: 650; font-variant-numeric: tabular-nums; line-height: 1; }
+  #caption { margin: 0; }
+  #play { padding: 5px 12px; border-radius: 6px; border: 1px solid var(--snow-amount-4); background: var(--snow-amount-4);
+    color: #fff; cursor: pointer; flex: none; }
+  #slider { width: 100%; accent-color: var(--snow-amount-4); }
+  .ends { display: flex; justify-content: space-between; margin-top: -4px; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div class="panel box">
+  <div class="yearrow"><span id="year">1984</span><button id="play" type="button">▶ Play</button></div>
+  <p class="small" id="caption"></p>
+  <input id="slider" type="range" min="0" max="41" step="1" value="0" aria-label="Year">
+  <div class="ends small"><span>1984</span><span>2026</span></div>
+  <div class="row">
+    <label for="thr">Ice where red / SWIR &gt;</label>
+    <input id="thr" type="range" min="1" max="4" step="0.1" value="2">
+    <span id="thr-value">2.0</span>
+  </div>
+  <details>
+    <summary>Layers and notes</summary>
+    <div style="display:grid; gap:5px; margin-top:6px">
+      <label class="check"><input id="ice" type="checkbox" checked><span class="sw ice"></span> Bright ice (this threshold); off = the red band alone</label>
+      <label class="check"><input id="o2015" type="checkbox" checked><span class="sw o15"></span> 2015 outlines (Portland State)</label>
+      <p class="small">One clear late-summer Landsat image a year, chosen for the least leftover snow. No image for 2012
+        (no working Landsat). Snow left from a big winter, or early autumn snow, makes a year look icier than it was.</p>
+    </div>
+  </details>
+  <a id="full" href="baker-years.html" target="_blank" rel="noopener">Full screen ↗</a>
+</div>
+<div id="status" class="box">Loading…</div>
+<div class="credit">Landsat 5, 7, 8, 9 (USGS, public domain), cut from
+  <a href="https://planetarycomputer.microsoft.com/dataset/landsat-c2-l2" target="_blank" rel="noopener">Planetary Computer</a> ·
+  <a href="https://github.com/developmentseed/deck.gl-raster" target="_blank" rel="noopener">deck.gl-raster</a></div>
+<script type="module" src="vendor/baker-years.js"></script>
+</body>
+</html>

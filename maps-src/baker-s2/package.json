@@ -2,7 +2,7 @@
   "private": true,
   "description": "Source of maps/vendor/baker-s2.js and its tile-decoding worker maps/vendor/worker.js (the bundle loads ./worker.js next to itself): the Mount Baker bright-ice map (deck.gl-raster). Build: npm ci && npm run build",
   "scripts": {
-    "build": "node patch-tile-range.mjs && esbuild main.js --bundle --format=esm --minify --target=es2022 --external:module --legal-comments=linked --outfile=../../maps/vendor/baker-s2.js && esbuild node_modules/@developmentseed/geotiff/dist/pool/worker.js --bundle --format=esm --minify --target=es2022 --external:module --legal-comments=linked --outfile=../../maps/vendor/worker.js"
+    "build": "node patch-tile-range.mjs && esbuild main.js --bundle --format=esm --minify --target=es2022 --external:module --legal-comments=linked --outfile=../../maps/vendor/baker-s2.js && esbuild node_modules/@developmentseed/geotiff/dist/pool/worker.js --bundle --format=esm --minify --target=es2022 --external:module --legal-comments=linked --outfile=../../maps/vendor/worker.js && esbuild years.js --bundle --format=esm --minify --target=es2022 --external:module --legal-comments=linked --outfile=../../maps/vendor/baker-years.js"
   },
   "dependencies": {
     "@deck.gl/core": "9.4.0",

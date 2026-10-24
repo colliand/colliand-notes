@@ -4,3 +4,6 @@ _build/
 __pycache__/
 .ipynb_checkpoints/
 *.egg-info/
+
+# Baker years COGs: built by scripts/baker_years_cogs.py, served from R2 (scripts/baker_years_upload.py)
+maps/data/years/
