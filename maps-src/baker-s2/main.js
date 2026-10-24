@@ -54,7 +54,10 @@ uniform glacierRatioUniforms {
   }),
 };
 
-const state = { scenes: [], index: 0, threshold: 2, showIce: true, show2015: true, show2025: false };
+// index: the year asked for; shown: the year whose image is on screen. Every year keeps its own layer (and tile cache),
+// and the old year stays on top until the new one has drawn, so switching never blanks the map. Once the first year
+// has drawn, the others load in the background, so later switches are instant.
+const state = { scenes: [], index: 0, shown: null, preload: false, drawn: new Set(), threshold: 2, showIce: true, show2015: true, show2025: false };
 let outlines = null;
 let utm10 = null;
 
@@ -73,24 +76,43 @@ function showError(e) {
   console.error(e);
 }
 
+function sceneLayer(i, iceColor) {
+  const s = state.scenes[i];
+  // Keep one sources object per scene: a new object makes the layer reopen every file and drop its tiles
+  s.sources ??= Object.fromEntries(Object.entries(s.bands).map(([k, href]) => [k, { url: href }]));
+  return new MultiCOGLayer({
+    id: `s2-${s.date}`,
+    sources: s.sources,
+    composite: { r: "red", g: "green", b: "blue", a: "swir" },
+    epsgResolver: async () => utm10,
+    renderPipeline: [{
+      module: GlacierRatio,
+      props: { threshold: state.threshold, offset: s.offset / 65535, showIce: state.showIce ? 1 : 0, iceColor },
+    }],
+    onViewportLoad: () => {
+      state.drawn.add(i);
+      if (i !== state.index) return;
+      el("status").hidden = true;
+      if (state.shown !== i || !state.preload) {
+        state.shown = i;
+        state.preload = true;
+        render().catch(showError);
+      }
+    },
+  });
+}
+
 async function render() {
   const s = state.scenes[state.index];
   const iceColor = rgb(css("--snow-amount-0") || "#f2f0f7").map((v) => v / 255);
-  // Keep one sources object per scene: a new object makes the layer reopen every file and drop its tiles
-  s.sources ??= Object.fromEntries(Object.entries(s.bands).map(([k, href]) => [k, { url: href }]));
-  const sources = s.sources;
+  // Drawn bottom to top: years loading in the background, the year asked for, and (until that one has drawn) the year
+  // still on screen.
+  const order = state.scenes.map((_, i) => i)
+    .filter((i) => i !== state.index && i !== state.shown && state.preload);
+  order.push(state.index);
+  if (state.shown !== null && state.shown !== state.index) order.push(state.shown);
   const layers = [
-    new MultiCOGLayer({
-      id: `s2-${s.date}`,
-      sources,
-      composite: { r: "red", g: "green", b: "blue", a: "swir" },
-      epsgResolver: async () => utm10,
-      renderPipeline: [{
-        module: GlacierRatio,
-        props: { threshold: state.threshold, offset: s.offset / 65535, showIce: state.showIce ? 1 : 0, iceColor },
-      }],
-      onGeoTIFFLoad: () => { el("status").hidden = true; },
-    }),
+    ...order.map((i) => sceneLayer(i, iceColor)),
     new GeoJsonLayer({
       id: "outlines",
       data: outlines.features.filter((f) => (f.properties.set === "2015" ? state.show2015 : state.show2025)),
@@ -126,7 +148,15 @@ async function start() {
     b.type = "button";
     b.textContent = s.date.slice(0, 4);
     b.title = s.date;
-    b.addEventListener("click", () => { state.index = i; el("status").textContent = "Loading…"; el("status").hidden = false; render().catch(showError); });
+    b.addEventListener("click", () => {
+      state.index = i;
+      if (state.drawn.has(i)) state.shown = i;  // already drawn once: its tiles are cached, swap now
+      if (state.shown !== i) {
+        el("status").textContent = `Loading ${s.date.slice(0, 4)}…`;
+        el("status").hidden = false;
+      }
+      render().catch(showError);
+    });
     years.append(b);
   });
   el("thr").addEventListener("input", (e) => { state.threshold = Number(e.target.value); render().catch(showError); });
