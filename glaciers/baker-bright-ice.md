@@ -41,8 +41,15 @@ Portland State mapped them in 2015. Images: Sentinel-2, read from the public arc
 
 The 2015 image, the baseline, is not here. The only public copy that a browser can read is on Microsoft's Planetary
 Computer, which stores Sentinel-2 bands as 15-bit numbers. deck.gl-raster reads 16-bit, so for now 2015 shows only as
-the outlines. Each view streams about 20 MB of image tiles, so the first look at a year can take half a minute on a slow
-connection; after that the other years load in the background and switching is instant.
+the outlines.
+
+The first version was slow: each view streamed about 22 MB and took half a minute on my connection. Two fixes brought
+it to about 7 MB. The page now fetches only the two bands the test uses, red and shortwave infrared, so the background
+is the red band in grey rather than natural colour. And deck.gl-raster 0.8.1 fetched each shortwave-infrared block
+up to four times over: where two bands share a grid, a tile's edge lands exactly on the next block's edge, and the
+library counted that block too. The patch is one line
+([maps-src/baker-s2/patch-tile-range.mjs](https://github.com/colliand/colliand-notes/blob/main/maps-src/baker-s2/patch-tile-range.mjs)).
+After the first year, the others load in the background and switching is instant.
 
 ## Sources
 

@@ -1,7 +1,8 @@
 // Mount Baker bright ice, computed in the browser: Sentinel-2 red / shortwave-infrared (B04 / B11) above a threshold,
 // the method whatcom.land uses for its 2025 glacier estimate. Bands stream as Cloud-Optimized GeoTIFFs straight from
 // the public Sentinel-2 archive on AWS (Element 84, Collection 1); the ratio and threshold run on the GPU
-// (deck.gl-raster), so the slider is instant.
+// (deck.gl-raster), so the slider is instant. Only the two bands the test uses are fetched; the background is the red
+// band in grey (blue and green for natural colour would double the download).
 import { Deck, MapView } from "@deck.gl/core";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import { MultiCOGLayer } from "@developmentseed/deck.gl-geotiff";
@@ -79,11 +80,11 @@ function showError(e) {
 function sceneLayer(i, iceColor) {
   const s = state.scenes[i];
   // Keep one sources object per scene: a new object makes the layer reopen every file and drop its tiles
-  s.sources ??= Object.fromEntries(Object.entries(s.bands).map(([k, href]) => [k, { url: href }]));
+  s.sources ??= Object.fromEntries(Object.entries(s.bands).filter(([k]) => k === "red" || k === "swir").map(([k, href]) => [k, { url: href }]));
   return new MultiCOGLayer({
     id: `s2-${s.date}`,
     sources: s.sources,
-    composite: { r: "red", g: "green", b: "blue", a: "swir" },
+    composite: { r: "red", g: "red", b: "red", a: "swir" },  // grey from red; SWIR rides in alpha
     epsgResolver: async () => utm10,
     renderPipeline: [{
       module: GlacierRatio,
