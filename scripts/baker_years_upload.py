@@ -16,7 +16,7 @@ import boto3
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "maps" / "data" / "years"
 DATA = ROOT / "maps" / "data" / "baker_years.json"
-BUCKET, PREFIX, PUBLIC = "whatcom-land-data", "notes/baker-years/", "https://data.whatcom.land/"
+BUCKET, PREFIX, PUBLIC = "whatcom-land-data", "notes/baker-years/v3/", "https://data.whatcom.land/"  # v3: 8-bit, square-root coded
 APP = Path.home() / "Library/Application Support"
 
 keys = dict(l.split("=", 1) for l in (APP / "whatcom-land-r2").read_text().split())

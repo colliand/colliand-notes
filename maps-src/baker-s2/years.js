@@ -16,9 +16,8 @@ const el = (id) => document.getElementById(id);
 const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 const rgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
 
-// r = red, a = SWIR, each a uint16 digital number normalized to 0–1 (DN / 65535). Landsat Collection 2 surface
-// reflectance = DN × 0.0000275 − 0.2, i.e. v × 1.8022 − 0.2. Background: red reflectance 0–0.8 with gamma 1.6, the
-// flipbook's stretch.
+// r = red, a = SWIR, each stored in 8 bits as 1 + 254 × √reflectance (scripts/baker_years_cogs.py) and read as
+// v = byte / 255, so reflectance = ((255 v − 1) / 254)². Background: red reflectance 0–0.8 with gamma 1.6, the flipbook's stretch.
 const IceRatio = {
   name: "iceRatio",
   fs: `\
@@ -31,8 +30,8 @@ uniform iceRatioUniforms {
   inject: {
     "fs:DECKGL_FILTER_COLOR": /* glsl */ `
   if (color.r == 0.0) discard;
-  float iceR = color.r * 1.8022 - 0.2;
-  float iceS = max(color.a * 1.8022 - 0.2, 0.001);
+  float iceR = pow(max(color.r * 255.0 - 1.0, 0.0) / 254.0, 2.0);
+  float iceS = max(pow(max(color.a * 255.0 - 1.0, 0.0) / 254.0, 2.0), 0.001);
   float iceGrey = pow(clamp(iceR / 0.8, 0.0, 1.0), 1.0 / 1.6);
   if (iceRatio.showIce > 0.5 && iceR / iceS > iceRatio.threshold) {
     color = vec4(iceRatio.iceColor, 1.0);
@@ -61,7 +60,8 @@ const deck = new Deck({
 });
 
 function showError(e) {
-  el("status").textContent = "The images did not load. Reload the page to try again.";
+  const why = String(e?.message ?? e ?? "").slice(0, 160);
+  el("status").textContent = `The images did not load. Reload the page to try again.${why ? ` (${why})` : ""}`;
   el("status").hidden = false;
   console.error(e);
 }

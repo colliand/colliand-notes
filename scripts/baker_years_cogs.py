@@ -5,8 +5,8 @@
 Streaming the full Landsat scenes from Planetary Computer cost ~3 MB a summer and, on a slow day, minutes for all 42,
 too slow to play. whatcom.land's glacier flipbook already holds the 16 km square around the summit for every scene it
 considered (its .cache/flipbook, read from Planetary Computer, 1995 already shifted onto the ground). This cuts each
-chosen scene's red and SWIR 1.6 µm bands from that cache into two Cloud-Optimized GeoTIFFs (uint16 Collection 2
-digital numbers unchanged, deflate, 256 px blocks) in maps/data/years/ (gitignored), and points
+chosen scene's red and SWIR 1.6 µm bands from that cache into two Cloud-Optimized GeoTIFFs (square-root-coded
+surface reflectance as uint8, deflate, 256 px blocks) in maps/data/years/ (gitignored), and points
 maps/data/baker_years.json at them; scripts/baker_years_upload.py then puts them on R2.
 Run scripts/baker_years_data.py first.
 """
@@ -34,9 +34,15 @@ for f in data["frames"]:
     shifted = CACHE / f"{f['scene']}-shifted.npz"
     z = np.load(shifted if shifted.exists() else CACHE / f"{f['scene']}.npz")
     for band, key in (("red", "red"), ("swir", "swir16")):
-        a = z[key]
+        dn = z[key]
+        # 8-bit, so every phone can draw it (16-bit textures need a WebGL extension iPhones may lack). Square-root
+        # coding keeps precision where ice lives, at low SWIR reflectance: byte = 1 + 254 × √reflectance (0–1; 0 = no
+        # data), decoded as ((byte − 1) / 254)². Against the 16-bit values the ice area differs by ≤ 0.5% in every year
+        # (median 0.02%); a linear 8-bit scale lost up to 3%.
+        refl = np.clip(dn.astype("float32") * 0.0000275 - 0.2, 0, 1)
+        a = np.where(dn > 0, np.round(np.sqrt(refl) * 254) + 1, 0).astype("uint8")
         path = OUT / f"{f['year']}-{band}.tif"
-        with rasterio.open(path, "w", driver="COG", width=a.shape[1], height=a.shape[0], count=1, dtype="uint16",
+        with rasterio.open(path, "w", driver="COG", width=a.shape[1], height=a.shape[0], count=1, dtype="uint8",
                            crs=f"EPSG:{book['utm_epsg']}", transform=from_origin(x0, y1, RES, RES), nodata=0,
                            compress="DEFLATE", predictor=2, blocksize=256, overview_resampling="average") as dst:
             dst.write(a, 1)
