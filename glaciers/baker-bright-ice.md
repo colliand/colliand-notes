@@ -41,7 +41,8 @@ Portland State mapped them in 2015. Images: Sentinel-2, read from the public arc
 
 The 2015 image, the baseline, is not here. The only public copy that a browser can read is on Microsoft's Planetary
 Computer, which stores Sentinel-2 bands as 15-bit numbers. deck.gl-raster reads 16-bit, so for now 2015 shows only as
-the outlines. Each view streams about 5 MB of image tiles, so the first look at a year takes a few seconds.
+the outlines. Each view streams about 20 MB of image tiles, so the first look at a year can take half a minute on a slow
+connection; after that the other years load in the background and switching is instant.
 
 ## Sources
 
