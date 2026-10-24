@@ -1,7 +1,7 @@
 // Mount Baker, one late summer a year since 1984, played like a film. Each frame is a Landsat scene's red and SWIR
 // 1.6 µm bands, cut to a 16 km square as small Cloud-Optimized GeoTIFFs on R2 (scripts/baker_years_cogs.py and
 // baker_years_upload.py; streaming whole scenes from Planetary Computer was too slow to play), and the bright-ice test
-// (red / SWIR > threshold, on surface reflectance) runs on the GPU, so the slider works while it plays. Frames load in
+// (red / SWIR > threshold, on surface reflectance) runs on the GPU, so the threshold works while it plays. Frames load in
 // the background a few at a time; the film plays as far as they have arrived.
 import { Deck, MapView } from "@deck.gl/core";
 import { GeoJsonLayer } from "@deck.gl/layers";
@@ -111,11 +111,19 @@ function render() {
   }));
   deck.setProps({ layers });
   const f = state.frames[state.index];
-  const s = state.frames[state.shown ?? state.index];
-  el("year").textContent = s.year;
-  el("caption").textContent = `${new Date(s.date + "T12:00").toLocaleDateString("en-US", { month: "long", day: "numeric" })}, ${s.satellite}`
-    + (s.partly_cloudy ? " · partly cloudy" : "");
-  el("slider").value = state.index;
+  // The label follows the year asked for at once (a finger on the strip); the image follows when it has arrived
+  el("year").textContent = f.year;
+  el("caption").textContent = state.drawn.has(state.index)
+    ? `${new Date(f.date + "T12:00").toLocaleDateString("en-US", { month: "long", day: "numeric" })}, ${f.satellite}`
+      + (f.partly_cloudy ? " · partly cloudy" : "")
+    : "loading this summer…";
+  const tl = el("timeline");
+  [...tl.children].forEach((tick, i) => {
+    tick.classList.toggle("loaded", state.drawn.has(i));
+    tick.classList.toggle("now", i === state.index);
+  });
+  tl.setAttribute("aria-valuenow", f.year);
+  tl.setAttribute("aria-valuetext", `${f.year}`);
   el("thr-value").textContent = state.threshold.toFixed(1);
   const waiting = state.shown !== state.index;
   el("status").textContent = waiting ? `Loading ${f.year}…` : `${state.drawn.size} of ${state.frames.length} summers loaded`;
@@ -124,6 +132,7 @@ function render() {
 }
 
 function go(i) {
+  if (i === state.index && state.mounted.size) return;
   state.index = i;
   if (state.drawn.has(i)) state.shown = i;
   mountMore();
@@ -147,6 +156,36 @@ function setPlaying(on) {
   render();
 }
 
+// The year strip: touch or drag anywhere to scrub (pointer events cover mouse, pen and touch), scroll or swipe over it
+// to step, arrow keys for the keyboard. Any of these pauses playback.
+function timeline() {
+  const tl = el("timeline");
+  const n = state.frames.length;
+  tl.replaceChildren(...state.frames.map((f) => Object.assign(document.createElement("i"), { title: f.year })));
+  const at = (x) => {
+    const r = tl.getBoundingClientRect();
+    return Math.max(0, Math.min(n - 1, Math.floor(((x - r.left) / r.width) * n)));
+  };
+  const scrub = (i) => { if (state.playing) setPlaying(false); go(i); };
+  tl.addEventListener("pointerdown", (e) => { tl.setPointerCapture(e.pointerId); scrub(at(e.clientX)); });
+  tl.addEventListener("pointermove", (e) => { if (tl.hasPointerCapture(e.pointerId)) scrub(at(e.clientX)); });
+  let wheel = 0;
+  tl.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    wheel += Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    const steps = Math.trunc(wheel / 30);
+    if (steps) { wheel -= steps * 30; scrub(Math.max(0, Math.min(n - 1, state.index + steps))); }
+  }, { passive: false });
+  tl.addEventListener("keydown", (e) => {
+    const k = { ArrowLeft: -1, ArrowDown: -1, ArrowRight: 1, ArrowUp: 1 }[e.key];
+    if (k) scrub(Math.max(0, Math.min(n - 1, state.index + k)));
+    else if (e.key === "Home") scrub(0);
+    else if (e.key === "End") scrub(n - 1);
+    else return;
+    e.preventDefault();
+  });
+}
+
 async function start() {
   const [data, geo, projjson] = await Promise.all([
     fetch("data/baker_years.json").then((r) => r.json()),
@@ -156,9 +195,7 @@ async function start() {
   state.frames = data.frames;
   outlines = geo;
   utm10 = parseWkt(projjson);
-  const s = el("slider");
-  s.max = state.frames.length - 1;
-  s.addEventListener("input", (e) => { setPlaying(false); go(Number(e.target.value)); });
+  timeline();
   el("play").addEventListener("click", () => setPlaying(!state.playing));
   el("thr").addEventListener("input", (e) => { state.threshold = Number(e.target.value); render(); });
   el("ice").addEventListener("change", (e) => { state.showIce = e.target.checked; render(); });

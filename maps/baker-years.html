@@ -44,7 +44,12 @@
   #caption { margin: 0; }
   #play { padding: 5px 12px; border-radius: 6px; border: 1px solid var(--snow-amount-4); background: var(--snow-amount-4);
     color: #fff; cursor: pointer; flex: none; }
-  #slider { width: 100%; accent-color: var(--snow-amount-4); }
+  /* Year strip: one tick per summer, darker once loaded; touch or drag anywhere on it, or scroll over it */
+  #timeline { position: relative; display: flex; align-items: flex-end; gap: 1px; height: 34px; touch-action: none;
+    cursor: ew-resize; user-select: none; -webkit-user-select: none; border-radius: 4px; outline-offset: 3px; }
+  #timeline i { flex: 1; height: 12px; border-radius: 1px; background: var(--neutral-line); transition: height .08s; }
+  #timeline i.loaded { background: var(--snow-amount-2); }
+  #timeline i.now { height: 30px; background: var(--snow-amount-4); }
   .ends { display: flex; justify-content: space-between; margin-top: -4px; }
   @media (max-width: 640px) { .panel { bottom: 40px; } }  /* the credit wraps to two lines on a phone */
 </style>
@@ -54,7 +59,7 @@
 <div class="panel box">
   <div class="yearrow"><span id="year">1984</span><button id="play" type="button">▶ Play</button></div>
   <p class="small" id="caption"></p>
-  <input id="slider" type="range" min="0" max="41" step="1" value="0" aria-label="Year">
+  <div id="timeline" role="slider" tabindex="0" aria-label="Year" aria-valuemin="1984" aria-valuemax="2026"></div>
   <div class="ends small"><span>1984</span><span>2026</span></div>
   <div class="row">
     <label for="thr">Ice where red / SWIR &gt;</label>
