@@ -5,7 +5,6 @@ date: 2026-10-23
 thumbnail: img/share-nooksack-2021.jpg
 description: Radar from Sentinel-1 caught the Nooksack flood at 6:20 am on 16 November 2021. Comparing that pass with six from before the flood finds about 8,600 acres of open water, nine-tenths of it inside FEMA's mapped flood zones.
 tags: [Sentinel-1, radar, floods, Nooksack, whatcom.land]
-draft: true
 kernelspec:
   name: python3
   display_name: Python 3

@@ -19,6 +19,9 @@ project:
   toc:
   # BEGIN toc (scripts/build_index.py)
     - file: index.md
+    - title: Floods
+      children:
+        - file: floods/nooksack-flood-2021.md
     - title: Glaciers
       children:
         - file: glaciers/mount-baker.md
@@ -27,9 +30,6 @@ project:
     - title: Fires
       children:
         - file: fires/perry-severity.md
-    - title: Drafts
-      children:
-        - file: floods/nooksack-flood-2021.md
   # END toc
 site:
   template: book-theme
