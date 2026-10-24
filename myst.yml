@@ -19,14 +19,15 @@ project:
   toc:
   # BEGIN toc (scripts/build_index.py)
     - file: index.md
-    - title: Floods
-      children:
-        - file: floods/nooksack-flood-2021.md
     - title: Glaciers
       children:
+        - file: glaciers/baker-years.md
         - file: glaciers/mount-baker.md
         - file: glaciers/baker-bright-ice.md
         - file: glaciers/mount-hood.md
+    - title: Floods
+      children:
+        - file: floods/nooksack-flood-2021.md
     - title: Fires
       children:
         - file: fires/perry-severity.md

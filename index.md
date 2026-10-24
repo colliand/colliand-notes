@@ -11,21 +11,16 @@ I draft these notes with help from AI language models, working from analysis cod
 :::
 
 <!-- BEGIN cards (scripts/build_index.py) -->
-## Floods
-
-::::{grid} 1 2 2 3
-:::{card} How much of Whatcom was under water on 16 November 2021?
-:link: floods/nooksack-flood-2021.md
-:header: 2026-10-23
-:footer: Sentinel-1 · radar · floods · Nooksack · whatcom.land
-![](floods/img/share-nooksack-2021.jpg)
-Mapping a flood from radar, through the clouds
-:::
-::::
-
 ## Glaciers
 
 ::::{grid} 1 2 2 3
+:::{card} Mount Baker, 42 summers
+:link: glaciers/baker-years.md
+:header: 2026-10-24
+:footer: Landsat · deck.gl-raster · Mount Baker · whatcom.land
+![](glaciers/img/baker-years.jpg)
+One Landsat image a late summer since 1984, played in your browser
+:::
 :::{card} What is happening to Mount Baker's glaciers?
 :link: glaciers/mount-baker.md
 :header: 2026-10-23
@@ -46,6 +41,18 @@ An experiment with deck.gl-raster and Sentinel-2
 :footer: Landsat · Mount Hood · Oregon
 ![](glaciers/img/share-hood-3d.jpg)
 Satellite images from 2013 to 2026, checked against maps made on the ground
+:::
+::::
+
+## Floods
+
+::::{grid} 1 2 2 3
+:::{card} How much of Whatcom was under water on 16 November 2021?
+:link: floods/nooksack-flood-2021.md
+:header: 2026-10-23
+:footer: Sentinel-1 · radar · floods · Nooksack · whatcom.land
+![](floods/img/share-nooksack-2021.jpg)
+Mapping a flood from radar, through the clouds
 :::
 ::::
 
