@@ -1,8 +1,8 @@
 ---
 title: Grant County's load and the Columbia
-subtitle: Since 2019, an ordinary autumn has come to need more power than Grant PUD's own dams make
+subtitle: Grant PUD's load has grown enough since 2019 that an ordinary autumn now needs more power than its own dams make
 date: 2026-11-04
-description: Grant County PUD, home to the Quincy data centers, now uses about 25% more power than in 2019. Its dams make power roughly in step with river flow until the turbines fill up, so the pinch comes in low-water autumns, and at today's load most years now have a month or more when local load tops local hydro.
+description: Grant County PUD, home to the Quincy data centers, used about 26% more power in 2025 than in 2019. Its two Columbia River dams make the least power in the low-water months of September and October, and at today's load those are now the months when Grant uses more than its dams make.
 tags: [energy, hydropower, Columbia River, data centers, EIA-930]
 draft: true
 kernelspec:
@@ -15,17 +15,19 @@ Drafted with help from AI language models, working from my exploration notebook 
 `scripts/grant_pud_data.py` in this site's repo. A dated snapshot (data through 31 October 2026), not peer reviewed.
 :::
 
-Data centers in Quincy and East Wenatchee sit beside the mid-Columbia dams. Grant County PUD runs Priest Rapids and
-Wanapum; Douglas PUD runs Wells; Chelan PUD runs Rock Island and Rocky Reach. Cheap hydropower is a large part of why
-the servers came. I wanted to know how fast local load is growing against what the river delivers, and whether a dry
-year now matters more than it used to.
+Quincy, in Grant County, Washington, has become a data-center town. The servers came for cheap electricity from the
+Columbia River. Grant County PUD, the public utility there, owns two dams on the river, Priest Rapids and Wanapum, and
+supplies the county's homes, farms and data centers. I wanted to see how much the county's demand for power has grown
+since 2019, and how it compares with what those two dams can make from the river month by month.
 
 :::{tip} In short
-- Grant PUD's average load rose from 612 MW in 2019 to 769 MW in 2025, about 26%. Douglas PUD rose about 35%.
-- Grant's dams make power roughly in step with river flow up to about 150,000 cubic feet per second. Above about
-  170,000 the turbines are full and the extra water spills, so a wet spring adds little.
-- At the 2019 load, only one month from 2019 to 2026 has Grant's load above its own hydro output: September 2023,
-  the driest. At the 2025 load, most years do, mostly in September and October, when the river is low.
+- Grant PUD's customers used about 26% more power in 2025 than in 2019, an average of 769 MW compared with 612 MW.
+- The dams turn more river into more power until the turbines are running flat out, at about 170,000 cubic feet per
+  second. Water beyond that goes over the spillway, so a big spring runoff adds little, while a low autumn river costs
+  a lot.
+- Had Grant's load stayed at its 2019 level, its own dams would have covered it in every month since 2019 except
+  September 2023, and then only by 5 MW. At the 2025 level they would have fallen short in 16 months, 12 of them in
+  September or October.
 :::
 
 ```{code-cell} python
@@ -47,40 +49,41 @@ plt.rcParams.update({"figure.dpi": 130, "axes.spines.top": False, "axes.spines.r
 
 ## Where the data comes from
 
-Every balancing authority in the US, the utility or agency that keeps supply and demand matched on its patch of grid,
-reports its load and generation to the Energy Information Administration each hour (form EIA-930). Grant PUD reports as
-`GCPD`. Its hydro generation is essentially the output of its two dams. For the river I use the USGS gauge just below
-Priest Rapids Dam, the last of Grant's dams, so the gauge measures the water that has just run through them.
+Every utility or agency that keeps supply and demand matched on its own patch of the US grid, a balancing authority,
+reports its load and generation to the Energy Information Administration each hour, on form EIA-930. Grant PUD
+reports as `GCPD`, and its hydro generation is essentially the output of its two dams. For the river I use the USGS
+gauge just below Priest Rapids Dam, the lower of Grant's two dams, which measures the water that has just run through
+both of them.
 
-## How fast is load growing?
+## How Grant's load has grown
 
 ```{code-cell} python
 :tags: [remove-input]
 names = {"DOPD": "Douglas PUD", "GCPD": "Grant PUD", "BPAT": "Bonneville", "CHPD": "Chelan PUD"}
-colors = {"DOPD": "#7a4a9e", "GCPD": LOAD, "BPAT": MUTED, "CHPD": "#5b86a8"}
+colors = {"DOPD": LINE, "GCPD": LOAD, "BPAT": LINE, "CHPD": LINE}
 nudge = {"BPAT": 1.2, "CHPD": -1.2}  # keep the two labels apart
 idx = annual.loc[2019:2025] / annual.loc[2019] * 100
 fig, ax = plt.subplots(figsize=(7.5, 3.6))
 for ba, label in names.items():
     ax.plot(idx.index, idx[ba], marker="o", ms=3, color=colors[ba], lw=2 if ba == "GCPD" else 1.2)
     ax.text(2025.1, idx.loc[2025, ba] + nudge.get(ba, 0), f"{label} {idx.loc[2025, ba] - 100:+.0f}%",
-            va="center", fontsize=8, color=colors[ba])
+            va="center", fontsize=8, color=LOAD if ba == "GCPD" else MUTED)
 ax.axhline(100, color=LINE, lw=0.8)
 ax.set_xlim(2018.8, 2026.4); ax.set_xticks(range(2019, 2026)); ax.set_ylabel("average load, 2019 = 100")
 plt.show()
 ```
 
-Average load, each year against 2019. Grant and Douglas, home to the Quincy and East Wenatchee campuses, grew far
-faster than Bonneville's large federal footprint or Chelan next door. Puget Sound Energy, my own utility on the west
-side, is left off: its load drops 20% between 2019 and 2020 and stays there, which looks like a change in what it
-reports rather than a real fall. 2026 is left out because December is not in yet.
+Grant's average load, each year compared with 2019, rose every year from 2020 to 2025. To see whether that is
+unusual I drew its neighbours in grey. Douglas PUD, across the river in East Wenatchee and also home to data centers,
+grew even faster from a smaller base. Chelan PUD and the Bonneville Power Administration grew by less than 10%. I left
+2026 out because December is not in yet.
 
-## Does more river mean more power?
+## How the river makes power
 
-Not simply. The power a dam makes is roughly efficiency × the weight of water × the flow **through the turbines** ×
-the head, the drop in water level across the dam. River flow is not turbine flow. Once the turbines are full, the
-extra water spills over the dam and makes nothing. High water also raises the river below the dam more than above it,
-which shrinks the head.
+The power a dam makes depends on how much water goes through its turbines and how far that water falls, which is
+called the head. Turbine flow keeps pace with river flow only up to a point. When the river runs higher than the
+turbines can take, the extra water goes over the spillway and makes no power, and high water backs up below the dam
+and shortens the fall.
 
 ```{code-cell} python
 :tags: [remove-input]
@@ -98,23 +101,21 @@ ax.legend(frameon=False, markerscale=3, fontsize=8, loc="lower right")
 plt.show()
 ```
 
-Each dot is one day from 2019 to October 2026. Three things show:
+Each dot is one day from 2019 to October 2026. Up to about 150,000 cubic feet per second, each extra thousand adds
+roughly 11 MW. Above about 170,000 the output levels off near 1,400 MW, however high the river runs.
 
-- **In step at low flow.** Up to about 150,000 cubic feet per second, each extra thousand adds roughly 11 MW.
-- **A ceiling.** Above about 170,000, output stays near 1,400 MW however high the river runs.
-- **Two curves.** At the same flow, winter days make more power than spring and summer days, up to 1,700 MW. My guess
-  is the spill required for young salmon in spring and summer, water sent past the turbines on purpose. I have not yet
-  checked that against Grant's operating rules.
-
-The low-water days of September and October sit on the steep part of the curve, where every lost thousand cubic feet
-per second costs the most power. They also sit on the winter curve, not the summer one, which fits the spill guess:
-the fish spill season is over by then.
+At the same flow, days from November to March make more power than days from April to August, and reach 1,700 MW. My
+guess is the spill for young salmon: in spring and summer the dams send some water over the spillway on purpose, to
+help the fish downstream. I haven't yet checked this against Grant's operating rules. The September and October days
+line up with the winter days, which fits the guess, since as I understand it the fish spill ends in late summer. Those
+autumn days also sit at the low end of the curve, where every thousand cubic feet per second lost costs the most
+power.
 
 ## Load growth or drought?
 
-The dry years 2023 to 2025 came at the same time as the load growth, so either could explain months when Grant's load
-ran above its own output. To separate them I hold the river fixed and change only the load: keep each year's real
-monthly hydro output, and set it against a flat load at the 2019 average and at the 2025 average.
+Grant's load first ran above its dams' output in 2023, a dry year, and I wanted to know whether the cause was the
+growing load or the low river. To separate the two, I kept each month's actual hydro output and compared it with two
+steady loads: the 2019 average of 612 MW and the 2025 average of 769 MW.
 
 ```{code-cell} python
 :tags: [remove-input]
@@ -144,26 +145,30 @@ table.index.name = None
 table
 ```
 
-- At the 2019 load, **one month in eight years** has load above output: September 2023, the driest, by 5 MW.
-- At the 2025 load, **most years** have one to four such months, including ordinary years like 2019 and 2021. Twelve
-  of those 16 months are September or October.
+With the 2019 load, Grant's dams would have fallen short in only one month in nearly eight years, September 2023,
+and then by just 5 MW. With the 2025 load they would have fallen short in 16 months, at least once in every year except
+2020, and 12 of those months are in September or October. Even in ordinary years like 2019 and 2021, today's load
+would have outrun the river in early autumn. The growth in load is what changed, and the low autumn river decides
+which months feel it.
 
-So the growth in load did it, and low water decides when.
+## Some caution
 
-## What this does not say
+Grant sells a share of its dams' output to other utilities under long-term contracts and buys power on the wider
+grid, so a month when its load tops its hydro output is a sign of pressure. The lights stay on, and Grant leans on
+the wider grid at the time of year when the whole river is low.
 
-- **Over 100% is a pressure sign, not a shortage.** Grant sells part of its dams' output to other utilities under
-  long-term contracts and buys power from the wider grid, so the lights stay on. What changes is that Grant leans on the
-  wider grid in the months when the whole river is low.
-- **Load is not all data centers.** EIA-930 does not meter them separately. The steady rise in the floor of Grant's
-  load fits servers that run around the clock, but that is a reading, not a measurement.
-- **A flat load is a simplification.** Real load peaks in July. The comparison is a first cut, not a forecast.
+EIA-930 counts all of Grant's load together and doesn't separate the data centers. The steady rise in the floor of
+the load looks to me like servers running day and night, but that is my reading of the curve.
+
+I used a steady load to keep the comparison simple. Real load peaks in July, so the months over in the table are a
+first estimate.
 
 ## What I want to look at next
 
-Grant's spill schedule, to test the two-curves guess. The head at each dam, from forebay and tailwater levels. The
-snowpack and glacier melt that keep the late-summer river up. And upstream: Grand Coulee and the Canadian dams under
-the Columbia River Treaty decide much of what reaches Grant in the first place.
+I'd like to check the two-curves guess against Grant's spill schedule, and look at the head at each dam from its
+water levels above and below. I'm also curious about the snowpack and glacier melt that keep the late-summer river up.
+Farther upstream, Grand Coulee and the Canadian dams under the Columbia River Treaty decide much of what reaches Grant
+in the first place.
 
 ## Data
 
