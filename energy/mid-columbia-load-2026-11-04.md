@@ -26,8 +26,8 @@ since 2019, and how it compares with what those two dams can make from the river
   second. Water beyond that goes over the spillway, so a big spring runoff adds little, while a low autumn river costs
   a lot.
 - Had Grant's load stayed at its 2019 level, its own dams would have covered it in every month since 2019 except
-  September 2023, and then only by 5 MW. At the 2025 level they would have fallen short in 16 months, 12 of them in
-  September or October.
+  September 2023, and then only by 5 MW. At the 2025 level they would have fallen short in six of the eight Septembers
+  from 2019 to 2026, in six of the eight Octobers, and in four other months.
 :::
 
 ```{code-cell} python
@@ -146,8 +146,8 @@ table
 ```
 
 With the 2019 load, Grant's dams would have fallen short in only one month in nearly eight years, September 2023,
-and then by just 5 MW. With the 2025 load they would have fallen short in 16 months, at least once in every year except
-2020, and 12 of those months are in September or October. Even in ordinary years like 2019 and 2021, today's load
+and then by just 5 MW. With the 2025 load they would have fallen short in six of the eight Septembers and six of the eight
+Octobers, and in four other months (two Aprils, a March and a February): at least once in every year except 2020. Even in ordinary years like 2019 and 2021, today's load
 would have outrun the river in early autumn. The growth in load is what changed, and the low autumn river decides
 which months feel it.
 
