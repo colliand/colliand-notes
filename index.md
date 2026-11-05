@@ -11,6 +11,18 @@ I draft these notes with help from AI language models, working from analysis cod
 :::
 
 <!-- BEGIN cards (scripts/build_index.py) -->
+## Energy
+
+::::{grid} 1 2 2 3
+:::{card} Grant County's load and the Columbia
+:link: energy/mid-columbia-load-2026-11-04.md
+:header: 2026-11-04
+:footer: energy · hydropower · Columbia River · data centers · EIA-930
+![](energy/img/share-grant-2026-11-04.jpg)
+Grant PUD's load has grown enough since 2019 that an ordinary autumn now needs more power than its own dams make
+:::
+::::
+
 ## Glaciers
 
 ::::{grid} 1 2 2 3

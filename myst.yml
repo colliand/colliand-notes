@@ -19,6 +19,9 @@ project:
   toc:
   # BEGIN toc (scripts/build_index.py)
     - file: index.md
+    - title: Energy
+      children:
+        - file: energy/mid-columbia-load-2026-11-04.md
     - title: Glaciers
       children:
         - file: glaciers/baker-years.md

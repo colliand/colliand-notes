@@ -2,9 +2,9 @@
 title: Grant County's load and the Columbia
 subtitle: Grant PUD's load has grown enough since 2019 that an ordinary autumn now needs more power than its own dams make
 date: 2026-11-04
+thumbnail: img/share-grant-2026-11-04.jpg
 description: Grant County PUD, home to the Quincy data centers, used about 26% more power in 2025 than in 2019. Its two Columbia River dams make the least power in the low-water months of September and October, and at today's load those are now the months when Grant uses more than its dams make.
 tags: [energy, hydropower, Columbia River, data centers, EIA-930]
-draft: true
 kernelspec:
   name: python3
   display_name: Python 3
