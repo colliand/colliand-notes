@@ -11,6 +11,18 @@ I draft these notes with help from AI language models, working from analysis cod
 :::
 
 <!-- BEGIN cards (scripts/build_index.py) -->
+## Wildlife
+
+::::{grid} 1 2 2 3
+:::{card} Wildlife by month in Whatcom County
+:link: wildlife/whatcom-wildlife-by-month.md
+:header: 2026-11-17
+:footer: wildlife · salmon · eBird · iNaturalist · Nooksack · whatcom.land
+![](wildlife/img/share-wildlife.png)
+How the data behind whatcom.land's Wildlife page was put together, from sightings, bird checklists and a salmon calendar
+:::
+::::
+
 ## Energy
 
 ::::{grid} 1 2 2 3

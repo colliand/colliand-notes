@@ -5,7 +5,7 @@ date: 2026-11-17
 thumbnail: img/share-wildlife.png
 description: Building a month-by-month view of Whatcom County's wildlife from eBird, iNaturalist and the salmon co-managers' run-timing table. Sightings follow people, so each animal is measured as a share of all reports that month. Eagles turn up with the chum, not with the summer salmon.
 tags: [wildlife, salmon, eBird, iNaturalist, Nooksack, whatcom.land]
-draft: true
+draft: false
 kernelspec:
   name: python3
   display_name: Python 3
@@ -231,4 +231,7 @@ such as nesting owls, murrelets and raptors at their nests, are left out, and eB
 - Washington Department of Fish and Wildlife, Salmonid Population Indicators, escapement
   ([data.wa.gov](https://data.wa.gov/d/fgyz-n3uk)).
 - Derived files: [`data/monthly.csv`](data/monthly.csv), [`data/salmon-timing.csv`](data/salmon-timing.csv) and
-  [`data/chum-spawners.csv`](data/chum-spawners.csv), rebuilt by `uv run python scripts/wildlife_data.py`.
+  [`data/chum-spawners.csv`](data/chum-spawners.csv), rebuilt by `uv run python scripts/wildlife_data.py`. The
+  `ebird_share` column is derived from eBird data and is supplied under the
+  [eBird Data Access Terms of Use](https://www.birds.cornell.edu/home/ebird-data-access-terms-of-use/)
+  (noncommercial use only).
