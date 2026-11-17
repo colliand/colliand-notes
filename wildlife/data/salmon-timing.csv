@@ -1,0 +1,10 @@
+species,run,in_river,spawning,uncertain
+chinook,spring native,2 3 4 5 6 7 8 9 10,7 8 9 10,
+chinook,fall hatchery-origin,6 7 8 9 10 11 12,9 10 11 12,6 12
+coho,,1 2 7 8 9 10 11 12,1 2 10 11 12,2
+chum,fall,1 2 8 9 10 11 12,1 2 10 11 12,
+pink,odd years only,6 7 8 9 10,8 9 10,6
+sockeye,Nooksack small runs,4 5 6 7 8 9 10 11,8 9 10 11,
+sockeye,Baker Lake via Skagit,6 7 8 9 10,,
+steelhead,summer,1 2 3 4 5 6 7 8 9 10 11 12,2 3 4,
+steelhead,winter,1 2 3 4 5 6 7 10 11 12,1 2 3 4 5 6 7 12,

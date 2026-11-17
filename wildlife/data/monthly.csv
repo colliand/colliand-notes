@@ -1,0 +1,181 @@
+animal,group,month,ebird_share,inat_count,all
+Bald eagle,follow,1,0.3502,225,4264
+Bald eagle,follow,2,0.3077,161,5559
+Bald eagle,follow,3,0.3207,211,8045
+Bald eagle,follow,4,0.2902,140,14431
+Bald eagle,follow,5,0.239,126,24564
+Bald eagle,follow,6,0.1624,122,22572
+Bald eagle,follow,7,0.1595,101,26797
+Bald eagle,follow,8,0.0703,30,21590
+Bald eagle,follow,9,0.0445,16,14849
+Bald eagle,follow,10,0.1973,58,12802
+Bald eagle,follow,11,0.278,90,6946
+Bald eagle,follow,12,0.3288,148,3928
+Glaucous-winged gull,follow,1,0.3399,10,4264
+Glaucous-winged gull,follow,2,0.3144,17,5559
+Glaucous-winged gull,follow,3,0.3256,9,8045
+Glaucous-winged gull,follow,4,0.304,15,14431
+Glaucous-winged gull,follow,5,0.2245,9,24564
+Glaucous-winged gull,follow,6,0.1566,7,22572
+Glaucous-winged gull,follow,7,0.2408,34,26797
+Glaucous-winged gull,follow,8,0.3192,22,21590
+Glaucous-winged gull,follow,9,0.3186,13,14849
+Glaucous-winged gull,follow,10,0.3282,4,12802
+Glaucous-winged gull,follow,11,0.3663,6,6946
+Glaucous-winged gull,follow,12,0.3549,5,3928
+Common merganser,follow,1,0.1276,20,4264
+Common merganser,follow,2,0.0957,34,5559
+Common merganser,follow,3,0.0893,28,8045
+Common merganser,follow,4,0.0502,22,14431
+Common merganser,follow,5,0.0303,7,24564
+Common merganser,follow,6,0.0217,6,22572
+Common merganser,follow,7,0.0167,9,26797
+Common merganser,follow,8,0.012,12,21590
+Common merganser,follow,9,0.0222,9,14849
+Common merganser,follow,10,0.0376,11,12802
+Common merganser,follow,11,0.077,12,6946
+Common merganser,follow,12,0.1104,12,3928
+River otter,follow,1,,3,4264
+River otter,follow,2,,3,5559
+River otter,follow,3,,5,8045
+River otter,follow,4,,10,14431
+River otter,follow,5,,5,24564
+River otter,follow,6,,8,22572
+River otter,follow,7,,11,26797
+River otter,follow,8,,5,21590
+River otter,follow,9,,5,14849
+River otter,follow,10,,6,12802
+River otter,follow,11,,7,6946
+River otter,follow,12,,5,3928
+Black bear,follow,1,,0,4264
+Black bear,follow,2,,1,5559
+Black bear,follow,3,,4,8045
+Black bear,follow,4,,9,14431
+Black bear,follow,5,,33,24564
+Black bear,follow,6,,25,22572
+Black bear,follow,7,,21,26797
+Black bear,follow,8,,39,21590
+Black bear,follow,9,,34,14849
+Black bear,follow,10,,7,12802
+Black bear,follow,11,,6,6946
+Black bear,follow,12,,0,3928
+Harlequin duck,fast,1,0.125,19,4264
+Harlequin duck,fast,2,0.1049,33,5559
+Harlequin duck,fast,3,0.1106,44,8045
+Harlequin duck,fast,4,0.0855,86,14431
+Harlequin duck,fast,5,0.0518,24,24564
+Harlequin duck,fast,6,0.0231,9,22572
+Harlequin duck,fast,7,0.0242,13,26797
+Harlequin duck,fast,8,0.0586,16,21590
+Harlequin duck,fast,9,0.1167,38,14849
+Harlequin duck,fast,10,0.1534,70,12802
+Harlequin duck,fast,11,0.1466,35,6946
+Harlequin duck,fast,12,0.111,20,3928
+American dipper,fast,1,0.0136,8,4264
+American dipper,fast,2,0.0107,1,5559
+American dipper,fast,3,0.0112,6,8045
+American dipper,fast,4,0.01,7,14431
+American dipper,fast,5,0.0136,8,24564
+American dipper,fast,6,0.0131,10,22572
+American dipper,fast,7,0.0156,14,26797
+American dipper,fast,8,0.0165,16,21590
+American dipper,fast,9,0.0245,36,14849
+American dipper,fast,10,0.0215,33,12802
+American dipper,fast,11,0.0187,10,6946
+American dipper,fast,12,0.0296,6,3928
+Belted kingfisher,fast,1,0.1042,20,4264
+Belted kingfisher,fast,2,0.0692,11,5559
+Belted kingfisher,fast,3,0.0846,12,8045
+Belted kingfisher,fast,4,0.0765,11,14431
+Belted kingfisher,fast,5,0.0548,9,24564
+Belted kingfisher,fast,6,0.0644,7,22572
+Belted kingfisher,fast,7,0.09,13,26797
+Belted kingfisher,fast,8,0.1218,19,21590
+Belted kingfisher,fast,9,0.152,20,14849
+Belted kingfisher,fast,10,0.1659,22,12802
+Belted kingfisher,fast,11,0.1693,14,6946
+Belted kingfisher,fast,12,0.1221,18,3928
+Great blue heron,fast,1,0.2028,46,4264
+Great blue heron,fast,2,0.1661,61,5559
+Great blue heron,fast,3,0.1856,81,8045
+Great blue heron,fast,4,0.2173,117,14431
+Great blue heron,fast,5,0.1961,103,24564
+Great blue heron,fast,6,0.1285,105,22572
+Great blue heron,fast,7,0.1926,121,26797
+Great blue heron,fast,8,0.2435,75,21590
+Great blue heron,fast,9,0.285,74,14849
+Great blue heron,fast,10,0.2892,85,12802
+Great blue heron,fast,11,0.2599,59,6946
+Great blue heron,fast,12,0.2094,46,3928
+Beaver,fast,1,,12,4264
+Beaver,fast,2,,10,5559
+Beaver,fast,3,,14,8045
+Beaver,fast,4,,26,14431
+Beaver,fast,5,,12,24564
+Beaver,fast,6,,13,22572
+Beaver,fast,7,,10,26797
+Beaver,fast,8,,7,21590
+Beaver,fast,9,,7,14849
+Beaver,fast,10,,8,12802
+Beaver,fast,11,,7,6946
+Beaver,fast,12,,5,3928
+Trumpeter swan,winter,1,0.1015,56,4264
+Trumpeter swan,winter,2,0.0718,34,5559
+Trumpeter swan,winter,3,0.0646,37,8045
+Trumpeter swan,winter,4,0.0066,0,14431
+Trumpeter swan,winter,5,0.002,3,24564
+Trumpeter swan,winter,6,0.0007,0,22572
+Trumpeter swan,winter,7,0.0006,0,26797
+Trumpeter swan,winter,8,0.001,0,21590
+Trumpeter swan,winter,9,0.0003,0,14849
+Trumpeter swan,winter,10,0.0206,6,12802
+Trumpeter swan,winter,11,0.1362,42,6946
+Trumpeter swan,winter,12,0.1356,39,3928
+Snow goose,winter,1,0.026,3,4264
+Snow goose,winter,2,0.0191,4,5559
+Snow goose,winter,3,0.0172,6,8045
+Snow goose,winter,4,0.0235,4,14431
+Snow goose,winter,5,0.0025,2,24564
+Snow goose,winter,6,0.0,0,22572
+Snow goose,winter,7,0.0,0,26797
+Snow goose,winter,8,0.0,0,21590
+Snow goose,winter,9,0.0035,1,14849
+Snow goose,winter,10,0.0954,16,12802
+Snow goose,winter,11,0.0826,12,6946
+Snow goose,winter,12,0.0259,1,3928
+Common goldeneye,winter,1,0.2867,73,4264
+Common goldeneye,winter,2,0.2285,92,5559
+Common goldeneye,winter,3,0.2307,73,8045
+Common goldeneye,winter,4,0.1082,27,14431
+Common goldeneye,winter,5,0.0244,5,24564
+Common goldeneye,winter,6,0.0029,4,22572
+Common goldeneye,winter,7,0.0041,1,26797
+Common goldeneye,winter,8,0.0084,2,21590
+Common goldeneye,winter,9,0.0081,1,14849
+Common goldeneye,winter,10,0.0104,2,12802
+Common goldeneye,winter,11,0.1604,16,6946
+Common goldeneye,winter,12,0.2727,77,3928
+Barrow's goldeneye,winter,1,0.1003,41,4264
+Barrow's goldeneye,winter,2,0.0739,37,5559
+Barrow's goldeneye,winter,3,0.0691,40,8045
+Barrow's goldeneye,winter,4,0.0397,15,14431
+Barrow's goldeneye,winter,5,0.0161,8,24564
+Barrow's goldeneye,winter,6,0.0122,5,22572
+Barrow's goldeneye,winter,7,0.0104,5,26797
+Barrow's goldeneye,winter,8,0.0056,2,21590
+Barrow's goldeneye,winter,9,0.007,3,14849
+Barrow's goldeneye,winter,10,0.0091,2,12802
+Barrow's goldeneye,winter,11,0.0605,18,6946
+Barrow's goldeneye,winter,12,0.0925,50,3928
+Pine grosbeak,winter,1,0.0006,0,4264
+Pine grosbeak,winter,2,0.0005,0,5559
+Pine grosbeak,winter,3,0.0001,1,8045
+Pine grosbeak,winter,4,0.0001,0,14431
+Pine grosbeak,winter,5,0.0,0,24564
+Pine grosbeak,winter,6,0.0001,0,22572
+Pine grosbeak,winter,7,0.0029,1,26797
+Pine grosbeak,winter,8,0.0044,2,21590
+Pine grosbeak,winter,9,0.0049,0,14849
+Pine grosbeak,winter,10,0.002,0,12802
+Pine grosbeak,winter,11,0.0015,0,6946
+Pine grosbeak,winter,12,0.0015,0,3928
