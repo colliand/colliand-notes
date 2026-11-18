@@ -5,7 +5,7 @@ date: 2026-11-18
 # thumbnail: img/share.jpg      (shown on the landing card and in share previews)
 description: Two state attorneys general and a New York homeowner are suing First Street over the flood and climate risk scores shown on home listings. This note tracks the cases and what they mean for anyone who publishes property-level model output.
 tags: [law, climate-risk, flood, data-products]
-draft: true
+draft: false
 ---
 
 :::{note} Machine-drafted, and kept up to date
