@@ -10,19 +10,25 @@ draft: true
 
 :::{note} Machine-drafted, and kept up to date
 Drafted with help from AI language models from the sources linked below. Not legal advice.
-**Last checked: 18 November 2026.** Statuses go stale, so check the dates before relying on one.
+**Last checked: 18 November 2026.** I am tracking these cases and update this note as they move.
+Statuses go stale, so check the dates before relying on one.
 :::
 
 I first heard about this at the Cloud-Native Geospatial Forum in October 2026. It matters beyond climate.
 The legal theory is about how a model's output is presented, not about whether the model is right, so it
 would apply to any producer that publishes confident numbers for individual properties.
 
+I read it as a crucible. A startup whose data product could displace an incumbent's numbers (here, FEMA flood
+maps and the insurance and real estate practices built on them) can be attacked on the validity of its data.
+The attack does not have to prove the model wrong. It only has to show the product claimed more than it could
+back up. That makes the defences mostly a matter of design and disclosure, which a startup controls.
+
 ## The cases
 
 | Case | Court | Filed | Law | Status (last checked) |
 |---|---|---|---|---|
 | *State of Nebraska ex rel. Hilgers v. First Street Technology, Inc.* | District Court of Dakota County, Nebraska | 27 Aug 2026 | Nebraska Consumer Protection Act; Uniform Deceptive Trade Practices Act | Pending. Only the complaint is on record (18 Nov 2026) |
-| Florida (AG Uthmeier) v. First Street Technology | State court, Polk County, Florida | 23 Oct 2026 | Florida Deceptive and Unfair Trade Practices Act | Pending. No response from First Street reported (18 Nov 2026) |
+| *Office of the Attorney General v. First Street Technology, Inc.*, Case No. 2026CA005207A000BA | Circuit Court, Tenth Judicial Circuit, Polk County, Florida | 23 Oct 2026 | Florida Deceptive and Unfair Trade Practices Act | Pending. No response from First Street reported (18 Nov 2026) |
 | *Uerkwitz v. First Street Technology and Zillow Group* | NY Supreme Court, New York County, Index No. 653631/2025 | June 2025 | Injurious falsehood (disparaging property) | Reported as pending (Oct 2026) |
 
 ## What the states object to
@@ -48,6 +54,27 @@ In the New York case, Zillow argued that a risk score is a forecast, "not a stat
 (as quoted in Nebraska's complaint, para. 141). Any producer of model output would reach for the same argument.
 The state suits are built to get around it by attacking the marketing claims, not the forecast.
 
+## Defensive moves for a data-product startup
+
+Each objection in the state complaints maps to something a producer can do before anyone sues.
+
+- **Show the uncertainty.** Publish a range or a confidence band with every property-level number, not a bare
+  score. The "forecast, not fact" defence is only as strong as the presentation behind it.
+- **Claim exactly what was validated.** Say which part was peer reviewed (the method) and which was not (each
+  property's score). Publish validation against observed outcomes, such as past claims and hindcasts.
+- **Disclose disagreement on the page.** Where your number differs from the authoritative one (FEMA, the
+  incumbent vendor), say so next to the number and explain why. Silence about it is what the states call deceptive.
+- **Run a correction channel.** Accept disputes, take in local evidence such as mitigation work, and keep a
+  versioned score history with a change log. A stated policy of never revising a score is the opposite.
+- **Match the word "transparent" to reality.** If the data is paywalled, say "documented", or open enough of
+  it that outsiders can check the model.
+- **Control how distributors show it.** License terms with listing sites can require the caveats, the range and a
+  link to the method, so a partner's display does not become your misrepresentation.
+- **Assume the paper trail will be read.** Model cards, validation reports and internal messages are discoverable.
+  Write them as if a state attorney general will quote them, because two have.
+- **Expect politics.** A number that moves prices has losers with allies. Don't depend on one channel or one
+  jurisdiction.
+
 ## Timeline
 
 - **June 2025.** The Uerkwitz family sues First Street and Zillow over a 9/10 flood score on a Chappaqua, New York
@@ -68,6 +95,8 @@ Nebraska
 - [Climate Litigation Database (Sabin Center)](https://www.climatecasechart.com/document/state-of-nebraska-v-first-street-technology-inc_0912)
 
 Florida
+- [Complaint (PDF)](https://www.myfloridalegal.com/sites/default/files/first-street-complaint.pdf)
+- [Climate Litigation Database (Sabin Center)](https://www.climatecasechart.com/document/office-of-the-attorney-general-v-first-street-technology-inc_74b3)
 - [ESG Dive](https://www.esgdive.com/news/florida-ag-sues-climate-analytics-provider-first-street-over-home-risk-scor/873473/)
 - [Insurance Journal (Bloomberg)](https://www.insurancejournal.com/news/southeast/2026/10/27/890449.htm)
 - [Florida Phoenix](https://floridaphoenix.com/2026/10/26/uthmeier-property-risk-assessment-company-is-marketing-fear-to-advance-a-climate-activism-agenda/)
@@ -82,6 +111,5 @@ New York and context
 ## To check next time
 
 - Has First Street answered either state, moved a case to federal court, or moved to dismiss?
-- Florida's complaint itself and its case number. I found news coverage but not the filing.
 - Did the MSCI acquisition close?
 - Other states following Nebraska and Florida.
