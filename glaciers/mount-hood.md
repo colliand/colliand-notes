@@ -53,9 +53,8 @@ plt.rcParams.update({"figure.dpi": 130, "axes.spines.top": False, "axes.spines.r
 ## What do the maps show?
 
 Portland State University mapped Hood's glaciers twice: from 1956 maps, and from 2015–16 images. Their outlines are in
-[GLIMS](https://www.glims.org), the global glacier inventory. In 2023 a team from the Oregon Glaciers Institute mapped
-the glaciers again, walking much of the ice edge
-([Bakken-French et al. 2024](https://doi.org/10.5194/tc-18-4517-2024)).
+[GLIMS](https://www.glims.org), the global glacier inventory [@glimsconsortiumGLIMSGlacierDatabase]. In 2023 a team from the Oregon Glaciers Institute mapped
+the glaciers again, walking much of the ice edge [@bakken-frenchUnprecedented21stCentury2024].
 
 :::{iframe} https://notes.colliand.com/maps/hood-3d.html
 :label: fig-hood-3d
@@ -154,10 +153,10 @@ a longer [methods note](https://github.com/colliand/glacier-change/blob/main/met
 
 ## Sources
 
-- Glacier outlines for 1956 and 2015–16: Portland State University, via GLIMS (NSIDC).
-- Glacier outlines for 2023: Oregon Glaciers Institute,
-  [doi:10.5281/zenodo.13356244](https://doi.org/10.5281/zenodo.13356244), CC BY 4.0. The study: Bakken-French et al.
-  (2024), *Unprecedented 21st century glacier loss on Mt. Hood, Oregon, USA*, The Cryosphere 18, 4517–4530.
+- Glacier outlines for 1956 and 2015–16: Portland State University, via GLIMS (NSIDC)
+  [@glimsconsortiumGLIMSGlacierDatabase].
+- Glacier outlines for 2023: Oregon Glaciers Institute [@oregonglaciersinstitute2023MtHood2024], CC BY 4.0.
+  The study: @bakken-frenchUnprecedented21stCentury2024.
 - Images: Landsat 8 and 9 (USGS) and Sentinel-2 (ESA Copernicus), via Microsoft Planetary Computer.
 - 3D terrain: AWS Terrain Tiles (Mapzen), from USGS 3DEP. Map colours and 3D view: the same as
   [whatcom.land](https://whatcom.land/glaciers).
