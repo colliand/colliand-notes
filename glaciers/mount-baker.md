@@ -53,7 +53,7 @@ plt.rcParams.update({"figure.dpi": 130, "axes.spines.top": False, "axes.spines.r
 ## What do the maps show?
 
 Portland State University mapped the glaciers of the North Cascades twice: from USGS maps made from 1974–75 air
-photos, and from 2015 images. Their outlines are in [GLIMS](https://www.glims.org), the global glacier inventory.
+photos, and from 2015 images. Their outlines are in [GLIMS](https://www.glims.org), the global glacier inventory [@fountainDataInventoryGlaciers2022; @glimsconsortiumGLIMSGlacierDatabase].
 Counting everything within 10 km of Baker's summit:
 
 ```{code-cell} python
@@ -187,8 +187,7 @@ If you know Baker's glaciers better than I do, I would like to hear from you. Th
 
 ## Sources
 
-- Glacier outlines for 1974–75 and 2015: Portland State University, via GLIMS (NSIDC),
-  [doi:10.15760/geology-data.03](https://doi.org/10.15760/geology-data.03), CC0.
+- Glacier outlines for 1974–75 and 2015: Portland State University, via GLIMS (NSIDC) [@fountainDataInventoryGlaciers2022], CC0.
 - Images: Sentinel-2 (ESA Copernicus; contains modified Copernicus Sentinel data) and Landsat 8 and 9 (USGS), via
   Microsoft Planetary Computer.
 - The glacier maps and 3D view: [whatcom.land](https://whatcom.land/glaciers).
