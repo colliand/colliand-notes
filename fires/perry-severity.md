@@ -241,5 +241,5 @@ and [issues](https://github.com/colliand/burn-severity/issues) are open.
   [Burn Severity Portal](https://burnseverity.cr.usgs.gov), public domain.
 - Images: Sentinel-2 (ESA Copernicus), via Microsoft Planetary Computer. Contains modified Copernicus Sentinel data
   (2024–2026).
-- Class lines: Key, C. H. and Benson, N. C. (2006), Landscape Assessment, in FIREMON, USDA Forest Service RMRS-GTR-164-CD.
+- Class lines: Key, C. H. and Benson, N. C. (2006), Landscape Assessment, in FIREMON [@lutesFIREMONFireEffects2006].
 - Colours: the same as on [whatcom.land](https://whatcom.land/fires).
