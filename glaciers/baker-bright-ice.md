@@ -54,6 +54,6 @@ After the first year, the others load in the background and switching is instant
 ## Sources
 
 - Images: Copernicus Sentinel-2 Level-2A, Collection 1, via [Element 84 on AWS](https://registry.opendata.aws/sentinel-2-l2a-cogs/).
-- 2015 outlines: Portland State University, via [GLIMS](https://www.glims.org).
+- 2015 outlines: Portland State University [@fountainDataInventoryGlaciers2022], via [GLIMS](https://www.glims.org) [@glimsconsortiumGLIMSGlacierDatabase].
 - The method and its checks against Portland State and the USGS: [whatcom.land, Glaciers](https://whatcom.land/glaciers).
 - Code: `maps/baker-s2.html` and `maps-src/baker-s2/` in [colliand/colliand-notes](https://github.com/colliand/colliand-notes).
