@@ -6,7 +6,7 @@ project:
       url: https://colliand.com
   github: https://github.com/colliand/colliand-notes
   license: CC-BY-4.0
-  # Citations: [@key] in a note, keys from Zotero (Better BibTeX). Export: zotero.org web API, format=bibtex
+  # Citations: [@key] in a note, keys from Zotero (Better BibTeX). references.bib is generated: `make bib`
   bibliography:
     - references.bib
   # The power button on notes with code: runs them in the page on mybinder.org (environment in binder/)

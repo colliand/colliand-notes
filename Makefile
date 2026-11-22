@@ -1,11 +1,16 @@
 # notes.colliand.com. `make new T=glaciers/baker-flipbook`, then write; drop `draft: true` to list it.
-.PHONY: build start new binder
+.PHONY: build start new binder bib
 
 build:
 	uv run npm run build
 
 start:
 	uv run npm start
+
+# references.bib from Zotero: exactly the items the notes cite ([@key]). Local only (needs the
+# Keychain key); Cloudflare builds from the committed file. Edit references in Zotero, not here.
+bib:
+	python3 $(HOME)/nexus/nexus-services/scripts/zotero_bib.py .
 
 new:
 	@test -n "$(T)" || { echo "usage: make new T=<topic>/<slug>"; exit 1; }
