@@ -77,7 +77,7 @@ plt.show()
 ```
 
 The radar letters are not physics. They are naming conventions from the Second World War, now fixed by
-**IEEE Std 521**, *Standard Letter Designations for Radar-Frequency Bands*. The blue bands are the ones Earth
+**IEEE Std 521**, *Standard Letter Designations for Radar-Frequency Bands* [@IEEEStandardLetter2020]. The blue bands are the ones Earth
 observation radars use. The shorter bands (Ku, K, Ka) are mostly used for altimetry and weather radar, not imaging.
 
 | Band | Frequency | Wavelength | What it is good at | Examples |
@@ -231,22 +231,15 @@ In the US, NOAA licenses NEI as commercial remote sensing. HEO reports the first
 image above 800 km (November 2025). Most of what I found comes from HEO's own press releases. I found no independent
 estimate of the market's size.
 
-## References
+## Sources
 
 Standard and survey references, then the sources for specific figures.
 
-- IEEE, *IEEE Standard Letter Designations for Radar-Frequency Bands*, IEEE Std 521-2019,
-  [doi:10.1109/IEEESTD.2020.8999849](https://doi.org/10.1109/IEEESTD.2020.8999849). The band letters.
-- A. Moreira, P. Prats-Iraola, M. Younis, G. Krieger, I. Hajnsek, K. P. Papathanassiou, "A tutorial on synthetic
-  aperture radar," *IEEE Geoscience and Remote Sensing Magazine* 1(1), 6–43 (2013),
-  [doi:10.1109/MGRS.2013.2248301](https://doi.org/10.1109/MGRS.2013.2248301).
-  ([open copy via IEEE GRSS](https://www.grss-ieee.org/resources/tutorials/dlr-tutorial-on-synthetic-aperture-radar-pdf/))
-- J. M. Bioucas-Dias, A. Plaza, G. Camps-Valls, P. Scheunders, N. M. Nasrabadi, J. Chanussot, "Hyperspectral remote
-  sensing data analysis and future challenges," *IEEE Geoscience and Remote Sensing Magazine* 1(2), 6–36 (2013),
-  [doi:10.1109/MGRS.2013.2244672](https://doi.org/10.1109/MGRS.2013.2244672).
-- A. Flores-Anderson et al. (eds.), *The SAR Handbook: Comprehensive Methodologies for Forest Monitoring and Biomass
-  Estimation*, NASA SERVIR and SilvaCarbon (2019), [NASA NTRS](https://ntrs.nasa.gov/citations/20190002563).
-  Free, with exercises.
+- The band letters: IEEE Std 521-2019 [@IEEEStandardLetter2020].
+- A tutorial on synthetic aperture radar [@moreiraTutorialSyntheticAperture2013]
+  ([open copy via IEEE GRSS](https://www.grss-ieee.org/resources/tutorials/dlr-tutorial-on-synthetic-aperture-radar-pdf/)).
+- Hyperspectral data analysis [@bioucas-diasHyperspectralRemoteSensing2013].
+- The SAR Handbook [@floresSyntheticApertureRadar2019]. Free, with exercises.
 - NASA Earthdata, [What is SAR?](https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/sar). Band table,
   penetration, polarization, the 4 km antenna example.
 - NISAR data release: [NASA Earthdata](https://www.earthdata.nasa.gov/news/nisar-l-band-data-released-expanding-record-surface-changes),
