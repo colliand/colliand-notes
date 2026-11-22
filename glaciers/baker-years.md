@@ -109,8 +109,7 @@ is decided. The ice area moves by at most 0.5% against the 16-bit files in any y
 - Images: USGS Landsat 5, 7, 8 and 9, Collection 2 Level-2 surface reflectance, public domain, via
   [Microsoft Planetary Computer](https://planetarycomputer.microsoft.com/dataset/landsat-c2-l2). Landsat 7 after its
   2003 scan-line failure is left out.
-- 2015 outlines: Portland State University, via GLIMS (NSIDC),
-  [doi:10.15760/geology-data.03](https://doi.org/10.15760/geology-data.03), CC0.
+- 2015 outlines: Portland State University, via GLIMS (NSIDC) [@fountainDataInventoryGlaciers2022], CC0.
 - Scene choice: the whatcom.land flipbook, [Glaciers › Mount Baker, summer by summer](https://whatcom.land/glaciers#flipbook).
 - Code: `maps/baker-years.html`, `maps-src/baker-s2/years.js` and `scripts/baker_years_*.py` in
   [colliand/colliand-notes](https://github.com/colliand/colliand-notes).
