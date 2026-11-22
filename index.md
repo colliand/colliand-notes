@@ -11,6 +11,17 @@ I draft these notes with help from AI language models, working from analysis cod
 :::
 
 <!-- BEGIN cards (scripts/build_index.py) -->
+## Law
+
+::::{grid} 1 2 2 3
+:::{card} Climate risk scores in court
+:link: law/climate-risk-scores-in-court.md
+:header: 2026-11-18
+:footer: law · climate-risk · flood · data-products
+A running record of the lawsuits over First Street's property-level risk scores
+:::
+::::
+
 ## Wildlife
 
 ::::{grid} 1 2 2 3
