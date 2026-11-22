@@ -112,7 +112,7 @@ steps.to_frame()
 
 - **Darker than normal.** At least 3 dB darker than the six-pass normal: the place changed.
 - **Not permanent water.** Dark on any of the six earlier passes (a calm lake on a calm day), or water at least half the
-  time since 1984 in the European Commission's Global Surface Water record. My first try let lakes and bays
+  time since 1984 in the European Commission's Global Surface Water record [@pekelHighresolutionMappingGlobal2016]. My first try let lakes and bays
   through; this fixed it.
 - **Near a stream.** Less than 10 m above the nearest stream (height above nearest drainage, from a global elevation
   model). This removes the hillside shadows.
@@ -227,6 +227,6 @@ for decisions about a property.
 - Radar: Sentinel-1 radiometric terrain corrected backscatter (contains modified Copernicus Sentinel data, 2021;
   terrain correction by Catalyst), via Microsoft Planetary Computer, CC BY 4.0.
 - Height above nearest drainage: ASF GLO-30 HAND, from the Copernicus DEM GLO-30.
-- Permanent water: Pekel, J.-F. et al. (2016), Global Surface Water, EC Joint Research Centre.
+- Permanent water: Global Surface Water, EC Joint Research Centre [@pekelHighresolutionMappingGlobal2016].
 - Flood zones: FEMA National Flood Hazard Layer (effective). County boundary: US Census TIGERweb.
 - The flood map, gauges and flood history: [whatcom.land](https://whatcom.land/floods).
